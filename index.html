@@ -22,14 +22,14 @@
         <header class="row">
             <h1>Thrifty Streaming</h1>
             <nav class="row">
-                <input type="radio" id="stacked" name="chartType" value="stacked">
-                <label for="stacked">Stacked</label><br>
-                <input type="radio" id="scatterplot" name="chartType" value="scatterplot">
-                <label for="scatterplot">Scatterplot</label><br>
-                <input type="radio" id="sunburst" name="chartType" value="sunburst">
-                <label for="sunburst">Sunburst</label>
-                <input type="radio" id="bar" name="chartType" value="bar" checked>
+                <input type="radio" id="bar" name="chartType" value="bar" checked onchange="setChartType(this.value)">
                 <label for="bar">Bar</label>
+                <input type="radio" id="stacked" name="chartType" value="stacked" onchange="setChartType(this.value)">
+                <label for="stacked">Stacked</label><br>
+                <input type="radio" id="scatterplot" name="chartType" value="scatterplot" onchange="setChartType(this.value)">
+                <label for="scatterplot">Scatterplot</label><br>
+                <input type="radio" id="sunburst" name="chartType" value="sunburst" onchange="setChartType(this.value)">
+                <label for="sunburst">Sunburst</label>
             </div>
         </header>
         <section class="row contents">
@@ -37,11 +37,11 @@
                 <div>
                     <h3>Data</h3>
                     <div>
-                        <input type="radio" id="movies" name="dataType" value="movies" checked>
+                        <input type="radio" id="movies" name="dataType" value="movies" onchange="setDataType(this.value)" checked>
                         <label for="movies">Movies</label>
                     </div>
                     <div>
-                        <input type="radio" id="tv" name="dataType" value="tv">
+                        <input type="radio" id="tv" name="dataType" onchange="setDataType(this.value)" value="tv_shows">
                         <label for="tv">TV Shows</label>
                     </div>
                 </div>
@@ -168,6 +168,10 @@
                 </div>
             </main>
         </section>
-        <script src="js/main.js" ></script>
+        <script src="js/Bar.js" ></script>
+        <script src="js/Scatterplot.js" ></script>
+        <script src="js/Stacked.js" ></script>
+        <script src="js/Sunburst.js" ></script>
+        <script src="js/Main.js" ></script>
     </body>
 </html>
