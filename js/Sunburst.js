@@ -3,7 +3,7 @@ class Sunburst {
 
     }
 
-    render(data) {
+    render(data, count) {
         console.log(data);
     }
 }

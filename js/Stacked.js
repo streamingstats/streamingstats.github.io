@@ -3,7 +3,7 @@ class Stacked {
 
     }
 
-    render(data) {
+    render(data, count) {
         console.log(data);
     }
 }

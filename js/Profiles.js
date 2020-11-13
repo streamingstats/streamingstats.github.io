@@ -6,7 +6,7 @@ class Profiles {
         })
     }
 
-    render(data) {
+    render(data, count) {
         console.log(this.data);
     }
 }
