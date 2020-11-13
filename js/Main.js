@@ -10,6 +10,7 @@ class Main {
             "stacked": new Stacked(),
             "sunburst": new Sunburst(),
             "profiles": new Profiles(),
+            "info": new Info(),
         }
         this.fetchData();
     }
@@ -230,6 +231,7 @@ class Main {
         }
 
         this.charts[this.chartType].render(localData, count);
+        this.charts.info.render(localData, count);
     }
 
     clearChart() {

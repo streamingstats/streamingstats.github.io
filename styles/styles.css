@@ -94,13 +94,23 @@ main {
 
 #chart {
   width: 100%;
-  flex-grow: 3;
+  height: 75%;
 }
 
 #info {
   background-color: #CCCCCC;
-  flex-grow: 1;
+  height: 25%;
   width: 100%;
   justify-content: center;
 }
+
+.bar {
+  fill: #a4cff4;
+  color: #a4cff4;
+}
+
+.axis {
+  color: black;
+}
+
 
