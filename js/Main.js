@@ -16,6 +16,7 @@ class Main {
             "scatterplot": new Scatterplot(),
             "stacked": new Stacked(),
             "sunburst": new Sunburst(),
+            "profiles": new Profiles()
         }
         this.fetchData();
     }
