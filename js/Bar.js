@@ -5,5 +5,6 @@ class Bar {
 
     render(data) {
         console.log(data);
+        
     }
 }
