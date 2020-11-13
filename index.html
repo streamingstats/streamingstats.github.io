@@ -30,6 +30,8 @@
                 <label for="scatterplot">Scatterplot</label><br>
                 <input type="radio" id="sunburst" name="chartType" value="sunburst" onchange="setChartType(this.value)">
                 <label for="sunburst">Sunburst</label>
+                <input type="radio" id="profiles" name="chartType" value="profiles" onchange="setChartType(this.value)">
+                <label for="profiles">Profiles</label>
             </div>
         </header>
         <section class="row contents">
@@ -63,13 +65,25 @@
                             <label for="italian">Italian</label>
                         </div>
                         <div>
+                            <input type="checkbox" id="french" name="language" value="french">
+                            <label for="french">French</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="german" name="language" value="german">
+                            <label for="german">German</label>
+                        </div>
+                        <div>
                             <input type="checkbox" id="japanese" name="language" value="japanese" checked>
                             <label for="japanese">Japanese</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="mandarin" name="language" value="mandarin" checked>
+                            <label for="mandarin">Mandarin</label>
                         </div>
                     </div>
                 </div>
 
-                <div>
+                <div id="years">
                     <h3>Year</h3>
                     <!-- TODO fill in min and max dynamically -->
                     <input type="number" id="minYear" name="minYear" min="1935" max="2020" value="1935">
@@ -152,8 +166,6 @@
                     <div id="moviesList" class="row">
                         <!--TODO have the JS files dynamically create the info boxes-->
                         <div class="amazon textField">
-                        </div>
-                        <div class="vudu textField">
                         </div>
                         <div class="hulu textField">
                         </div>

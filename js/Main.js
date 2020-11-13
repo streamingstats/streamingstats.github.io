@@ -2,9 +2,8 @@ class Main {
     constructor() {
         this.dataType = "movies";
         this.chartType = "bar";
-        this.languages = [];
-        this.yearMin = 1935;
-        this.yearMax = 2020;
+        this.yearMin = 2000;
+        this.yearMax = 2000;
         this.ageRange = [];
         this.genres = [];
         this.ratingMin = 0;
@@ -16,8 +15,17 @@ class Main {
             "scatterplot": new Scatterplot(),
             "stacked": new Stacked(),
             "sunburst": new Sunburst(),
+            "profiles": new Profiles(),
         }
         this.fetchData();
+    }
+
+    // Add in ability for user to select movies that are of interest to them.
+    // Filter results of data to each service.
+
+
+    clearData() {
+        this.languages = [];
     }
 
     setDataType(dataType) {
@@ -27,7 +35,7 @@ class Main {
 
     setChartType(chartType) {
         this.chartType = chartType;
-        this.render();
+        this.renderChart();
     }
 
     setLanguages(languages) {
@@ -59,15 +67,40 @@ class Main {
     }
 
     fetchData() {
-        d3.csv(`data/${this.dataType}.csv`)
+        d3.csv(`data/${this.dataType}.csv`, (row) => {
+            if (+row['Year'] < this.yearMin) {
+                this.yearMin = +row['Year'];
+            }
+
+            if (+row['Year'] > this.yearMax) {
+                this.yearMax = +row['Year'];
+            }
+            
+        })
         .then((data) => {
             this.data = data;
-            this.render();
+            this.renderInputs();
+            this.renderChart();
         });
     }
 
-    render() {
+    renderChart() {
         this.charts[this.chartType].render(this.data);
+    }
+
+    renderInputs() {
+        let yearDiv = d3.select("#years")
+            .selectAll("input");
+
+        inputs.remove();
+
+        console.log(this.yearMin);
+        console.log(this.yearMax);
+
+    }
+
+    renderLanguageOptions() {
+
     }
 }
 
