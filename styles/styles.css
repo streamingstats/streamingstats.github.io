@@ -44,12 +44,17 @@ nav {
 }
 
 .sidenav {
-  width: 15vw;
+  width: 20vw;
   background-color: #333333;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+}
+
+.sidenav > div {
+  margin: 10px;
+}
+
+.updateDiv {
+  text-align: center;
 }
 
 #moviesList {

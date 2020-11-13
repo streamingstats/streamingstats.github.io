@@ -4,6 +4,11 @@ class Bar {
     }
 
     render(data) {
-        console.log(data);
+
+
+        console.log(count);
+
+        d3.select("#chart")
+        .selectAll("rect")
     }
 }

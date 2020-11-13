@@ -36,6 +36,12 @@
         </header>
         <section class="row contents">
             <nav class="sidenav">
+                <div class="updateDiv">
+                    <button onclick="update()">
+                        Update
+                    </button>
+                </div>
+
                 <div>
                     <h3>Data</h3>
                     <div>
@@ -48,115 +54,21 @@
                     </div>
                 </div>
 
-                <div>
-                    <h3>Languages</h3>
-                    <div id="languages">
-                        <!-- TODO Probably have the JS files fill this in-->
-                        <div>
-                            <input type="checkbox" id="english" name="language" value="english" checked>
-                            <label for="english">English</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="spanish" name="language" value="spanish">
-                            <label for="spanish">Spanish</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="italian" name="language" value="italian">
-                            <label for="italian">Italian</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="french" name="language" value="french">
-                            <label for="french">French</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="german" name="language" value="german">
-                            <label for="german">German</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="japanese" name="language" value="japanese" checked>
-                            <label for="japanese">Japanese</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="mandarin" name="language" value="mandarin" checked>
-                            <label for="mandarin">Mandarin</label>
-                        </div>
-                    </div>
-                </div>
-
                 <div id="years">
                     <h3>Year</h3>
-                    <!-- TODO fill in min and max dynamically -->
-                    <input type="number" id="minYear" name="minYear" min="1935" max="2020" value="1935">
-                    <input type="number" id="maxYear" name="maxYear" min="1935" max="2020" value="2020">
                 </div>
 
                 <div>
                     <h3>Age Range</h3>
                     <div id="ages">
-                        <!-- TODO Probably have the JS files fill this in-->
-                        <div>
-                            <input type="checkbox" id="seven" name="ages" value="seven" checked>
-                            <label for="seven">7+</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="eleven" name="ages" value="eleven">
-                            <label for="eleven">11+</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="fourteen" name="ages" value="fourteen">
-                            <label for="fourteen">14+</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="eighteen" name="ages" value="eighteen">
-                            <label for="eighteen">18+</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <h3>Genres</h3>
-                    <div id="genres">
-                        <!-- TODO Probably have the JS files fill this in-->
-                        <div>
-                            <input type="checkbox" id="drama" name="genres" value="drama" checked>
-                            <label for="drama">Drama<label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="horror" name="genres" value="horror">
-                            <label for="horror">Horror</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="comedy" name="genres" value="comedy">
-                            <label for="comedy">Comedy</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="action" name="genres" value="action">
-                            <label for="action">Action</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="animation" name="genres" value="animation">
-                            <label for="animation">Animation</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="religious" name="genres" value="religious">
-                            <label for="religious">Religious</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="romance" name="genres" value="romance">
-                            <label for="romance">Romance</label>
-                        </div>
                     </div>
                 </div>
 
                 <div>
                     <h3>Rating</h3>
-                    <!-- TODO fill in min and max dynamically -->
-                    <input type="number" id="minRating" name="minRating" min="0" max="100" value="0">
-                    <input type="number" id="maxRating" name="maxRating" min="0" max="100" value="100">
+                    <input type="number" id="minRating" name="minRating" min="0" max="100" value="0" onchange="setRatingMin(this.value)">
+                    <input type="number" id="maxRating" name="maxRating" min="0" max="100" value="100" onchange="setRatingMax(this.value)">
                 </div>
-                <button>
-                    Apply
-                </button>
             </nav>
             <main>
                 <div id="chart">
@@ -180,6 +92,7 @@
                 </div>
             </main>
         </section>
+        <script src="js/Util.js" ></script>
         <script src="js/Bar.js" ></script>
         <script src="js/Scatterplot.js" ></script>
         <script src="js/Stacked.js" ></script>
