@@ -89,10 +89,22 @@ class Main {
     }
 
     renderInputs() {
-        let yearDiv = d3.select("#years")
-            .selectAll("input");
+        let yearDiv = d3.select("#years");
 
-        inputs.remove();
+        yearDiv.selectAll("input").remove();
+        yearDiv.append("input")
+        .attr("type", "number")
+        .attr("id", "minYear")
+        .attr("min", this.yearMin)
+        .attr("max", this.yearMax)
+        .attr("value", this.yearMin);
+
+        yearDiv.append("input")
+        .attr("type", "number")
+        .attr("id", "maxYear")
+        .attr("min", this.yearMin)
+        .attr("max", this.yearMax)
+        .attr("value", this.yearMax);
 
         console.log(this.yearMin);
         console.log(this.yearMax);
