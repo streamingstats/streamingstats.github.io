@@ -5,5 +5,6 @@ class Scatterplot {
 
     render(data) {
         console.log(data);
+        
     }
 }

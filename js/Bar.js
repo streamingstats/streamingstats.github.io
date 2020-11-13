@@ -4,8 +4,6 @@ class Bar {
     }
 
     render(data) {
-
-
         console.log(count);
 
         d3.select("#chart")
