@@ -3,6 +3,7 @@ class Main {
         this.dataType = "movies";
         this.chartType = "bar";
         this.util = new Util();
+        this.getCachedData();
 
         this.charts = {
             "bar": new Bar(),
@@ -13,6 +14,18 @@ class Main {
             "info": new Info(),
         }
         this.fetchData();
+    }
+
+    getCachedData() {
+        this.cachedData = this.util.getLocalStorage("answers");
+
+        if (this.cachedData === null) {
+            this.cachedData = {
+
+            };
+        }
+
+        this.util.setLocalStorage("answers", this.cachedData);
     }
 
     // Add in ability for user to select movies that are of interest to them.
