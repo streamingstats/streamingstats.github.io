@@ -66,6 +66,10 @@ class Profiles {
            .attr("transform", "translate(" + this.padding + ", 0)")
            .attr("class", "axis")
            .call(yAxis);
+        
+        svg.append("text")
+        .text("Profile Count in Comparison to Price")
+        .attr("transform", "translate("+ 150 + "," + (this.h - (this.padding / 3)) + ")")
 
         svg = d3.select("#chart")
 		     	.append("svg")
@@ -111,5 +115,46 @@ class Profiles {
            .attr("transform", "translate(" + this.padding + ", 0)")
            .attr("class", "axis")
            .call(yAxis);
+        
+       svg.append("text")
+          .text("Screen Count in Comparison to Price")
+          .attr("transform", "translate("+ 150 + "," + (this.h - (this.padding / 3)) + ")")
+        
+        svg = d3.select("#chart")
+                .append("svg")
+                .attr("width", this.w / 2)
+                .attr("height", this.h / 2);
+
+        let subgroups = ["Netflix", "Prime", "Hulu" , "Disney"];
+        let color = d3.scaleOrdinal()
+                      .domain(subgroups)
+                      .range(['#3385ff','#0052cc','#003d99', '#66a3ff'])
+
+        let legend = svg.selectAll(".legend")
+                        .data(color.range())
+                        .enter().append("g")
+                        .attr("class", "legend")
+                        .attr("transform", function(d, i) { return "translate(-225," + i * 19 + ")"; });
+      
+        legend.append("rect")
+              .attr("x", this.w / 2 - 18)
+              .attr("width", 18)
+              .attr("height", 18)
+              .style("fill", function(d, i) {
+                  return color.range()[i]});
+           
+        legend.append("text")
+              .attr("x", this.w / 2 + 5)
+              .attr("y", 9)
+              .attr("dy", ".35em")
+            .style("text-anchor", "start")
+            .text(function(d, i) { 
+              switch (i) {
+                case 0: return "Netflix";
+                case 1: return "Amazon Prime";
+                case 2: return "Hulu";
+                case 3: return "Disney+";
+              }
+            });
     }
 }
