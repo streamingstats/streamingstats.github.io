@@ -3,7 +3,7 @@ class Scatterplot {
 
     }
 
-    render(data) {
+    render(data, count) {
         console.log(data);
         
     }

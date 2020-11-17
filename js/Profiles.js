@@ -12,7 +12,7 @@ class Profiles {
         })
     }
 
-    render(data) {
+    render(data, count) {
         console.log(this.data);
         //let options = d3.select('#chart').data(this.options).append('input').attr('type', 'button').attr("value",d => {return d.text});
 
