@@ -46,7 +46,6 @@ class Main {
         } else if (!add && index !== -1) {
             this.languages.splice(index, 1);
         }
-
     }
 
     setYearMin(yearMin) {
