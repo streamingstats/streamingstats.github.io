@@ -14,7 +14,6 @@ class Profiles {
 
     render(data, count) {
         console.log(this.data);
-        //let options = d3.select('#chart').data(this.options).append('input').attr('type', 'button').attr("value",d => {return d.text});
 
         let xScale = d3.scaleLinear()
 			           .domain([0, d3.max(this.data, function(d) { return +d.price; })])
@@ -24,9 +23,9 @@ class Profiles {
 			           .domain([0, d3.max(this.data, function(d) { return +d.profile_count; })])
                        .range([this.h - this.padding, this.padding]);
 
-        let xAxis = d3.axisBottom().scale(xScale);
+        let xAxis = d3.axisBottom().scale(xScale).tickFormat("");
 		
-        let yAxis = d3.axisLeft().scale(yScale);
+        let yAxis = d3.axisLeft().scale(yScale).tickFormat("");
 
         let svg = d3.select("#chart")
 					.append("svg")
@@ -44,7 +43,17 @@ class Profiles {
                         return yScale(+d.profile_count);
                     })
                     .attr("r", 5)
-                    .attr("class", function(d) { return d.service});
+                    .attr("class", function(d) { return d.service})
+                    .on('mouseover', function(d){ 
+                        d3.select(this)
+                        .attr('r', '10')
+                        .append("svg:title")
+                        .text(`${d.service} \nPrice: $${d.price} \nProfile Count: ${d.profile_count}`)
+                    })
+                    .on('mouseout', function(){
+                        d3.select(this)
+                          .attr('r', '5')
+                    });
                     
         //x axis
         svg.append("g")
@@ -67,7 +76,7 @@ class Profiles {
                    .domain([0, d3.max(this.data, function(d) { return +d.screen_count; })])
                    .range([this.h - this.padding, this.padding]);
 
-        yAxis = d3.axisLeft().scale(yScale);
+        yAxis = d3.axisLeft().scale(yScale).tickFormat("");
         svg.selectAll("circle")
                     .data(this.data)
                     .enter()
@@ -79,7 +88,17 @@ class Profiles {
                         return yScale(+d.screen_count);
                     })
                     .attr("r", 5)
-                    .attr("class", function(d) { return d.service});
+                    .attr("class", function(d) { return d.service})
+                    .on('mouseover', function(d){ 
+                        d3.select(this)
+                        .attr('r', '10')
+                        .append("svg:title")
+                        .text(`${d.service} \nPrice: $${d.price} \nScreen Count: ${d.screen_count}`)
+                    })
+                    .on('mouseout', function(){
+                        d3.select(this)
+                          .attr('r', '5')
+                    });;
                     
         //x axis
         svg.append("g")

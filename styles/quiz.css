@@ -1,0 +1,14 @@
+body {
+  height: 100vh;
+  background-color: black;
+  justify-content: center;
+}
+
+a, a:hover, a:focus, a:active {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+a:hover {
+  font-weight: bold;
+}
