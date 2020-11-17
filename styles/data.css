@@ -1,0 +1,116 @@
+body,
+section,
+main,
+nav,
+h1,
+h2,
+h3,
+p {
+  margin: 0px;
+  padding: 0px;
+  color: #FFFFFF;
+}
+
+h1 {
+  margin: .20em 0 0 .5em;
+}
+
+h3 {
+  text-align: center;
+}
+
+body {
+  height: 100vh;
+}
+
+header {
+  background-color: #333333;
+  justify-content: space-between;
+  height: 8vh;
+}
+
+nav {
+  padding: 1em;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.contents {
+  justify-content: space-between;
+  height: 92vh;
+}
+
+.sidenav {
+  width: 20vw;
+  background-color: #333333;
+  overflow-y: auto;
+}
+
+.sidenav > div {
+  margin: 10px;
+}
+
+.updateDiv {
+  text-align: center;
+}
+
+#moviesList {
+  flex-grow: 3;
+}
+
+#links {
+  flex-grow: 1;
+}
+
+main {
+  width: 85vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+
+.textField {
+  flex-grow: 1;
+}
+
+.amazon {
+  background-color: #0052cc;
+}
+
+.hulu {
+  background-color: #003d99;
+}
+
+.netflix {
+  background-color: #3385ff;
+}
+
+.disney {
+  background-color: #66a3ff;
+}
+
+#chart {
+  width: 100%;
+  height: 75%;
+}
+
+#info {
+  background-color: #CCCCCC;
+  height: 25%;
+  width: 100%;
+  justify-content: center;
+}
+
+.bar {
+  fill: #a4cff4;
+  color: #a4cff4;
+}
+
+.axis {
+  color: black;
+}
+
+
