@@ -2,8 +2,8 @@ service,price,profile_count,screen_count
 Netflix,8.99,5,1
 Netflix,13.99,5,2
 Netflix,17.99,5,4
-Prime Video,8.99,1,2
-Prime Video,12.99,1,4
+Prime,8.99,1,2
+Prime,12.99,1,4
 Hulu,5.99,5,1
 Hulu,11.99,5,2
 Disney+,6.99,7,4

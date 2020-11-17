@@ -44,16 +44,18 @@ class Profiles {
                         return yScale(+d.profile_count);
                     })
                     .attr("r", 5)
-                    .attr("fill", "green");
+                    .attr("class", function(d) { return d.service});
                     
         //x axis
         svg.append("g")
             .attr("transform", "translate(0," + (this.h - this.padding) + ")")
+            .attr("class", "axis")
             .call(xAxis);
                 
         //y axis
         svg.append("g")	
            .attr("transform", "translate(" + this.padding + ", 0)")
+           .attr("class", "axis")
            .call(yAxis);
     }
 }

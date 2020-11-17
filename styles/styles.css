@@ -92,6 +92,22 @@ main {
   background-color: #66a3ff;
 }
 
+.Prime {
+  fill: #0052cc;
+}
+
+.Hulu {
+  fill: #003d99;
+}
+
+.Netflix {
+  fill: #3385ff;
+}
+
+.Disney {
+  fill: #66a3ff;
+}
+
 #chart {
   width: 100%;
   height: 75%;
