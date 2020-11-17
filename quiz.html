@@ -13,16 +13,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Streaming Stats</title>
-    <link rel="stylesheet" href="index/styles.css"/>
+    <link rel="stylesheet" href="styles/global.css"/>
+    <link rel="stylesheet" href="styles/quiz.css"/>
     <!--Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> -->
     <link rel="icon" type="image/png" href="./public/streaming.png" sizes="32x32">
+    <script src="js/d3.v5.min.js"></script>    
 </head>
-    <body>
-        <h1>
-            <a href="quiz.html">Go to quiz</a>
-        </h1>
-        <h1>
-            <a href="data.html">Look at Data</a>
-        </h1>
+    <body class="row">
+        <section>
+            <header>
+                <h1>Streaming Stats Quiz</h1>
+            </header>
+            <div class="quiz">
+                <button onclick="submit(this)">Submit</button>
+            </div>
+        </section>
+        <script src="js/Util.js" ></script>
+        <script src="js/Quiz.js" ></script>
     </body>
 </html>

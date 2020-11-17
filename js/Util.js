@@ -22,4 +22,17 @@ class Util {
         })
         return arrayA.sort();
     }
+
+    getLocalStorage(key) {
+        const val = localStorage.getItem(key);
+        try {
+          return JSON.parse(val);
+        } catch {
+          // do nothing
+        }
+      }
+
+    setLocalStorage(key, val) {
+        localStorage.setItem(key, JSON.stringify(val));
+    }
 }

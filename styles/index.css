@@ -1,0 +1,81 @@
+body {
+    height: 100vh;
+    background-color: black;
+    justify-content: center;
+}
+
+a, a:hover, a:focus, a:active {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+a:hover {
+    font-weight: bold;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+div {
+    padding: 10px;  
+}
+
+
+header {
+    animation: fadeIn ease 2s;
+    -webkit-animation: fadeIn ease 2s;
+}
+
+.subHeader {
+    animation: 
+        wait 2s,
+        fadeIn ease 2s 2s;
+    -webkit-animation: 
+        wait 2s,
+        fadeIn ease 2s 2s;
+}
+
+.userPrompt {
+    animation: 
+        wait 4s,
+        fadeIn ease 2s 4s;
+    -webkit-animation: 
+        wait 4s,
+        fadeIn ease 2s 4s;
+}
+
+/* Fade in CSS taken from  https://blog.hubspot.com/website/css-fade-in */
+
+@keyframes wait {
+    0% {opacity: 0;}
+    100% {opacity: 0;}
+}
+
+@keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+    
+@-moz-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+    
+@-webkit-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+    
+@-o-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+    
+@-ms-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
