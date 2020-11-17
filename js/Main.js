@@ -24,35 +24,7 @@ class Main {
         this.ratingMin = 0;
         this.ratingMax = 100;
         this.data = [];
-        this.languages = [
-            "English",
-            "Spanish", 
-            "Portuguese",
-            "Italian",
-            "French",
-            "German",
-            "Japanese",
-            "Chinese",
-            "Mandarin",
-            "Hindi",
-            "Russian",
-            "Korean",
-            "Arabic",
-            "Persian",
-            "Turkish",
-            "Cantonese",
-            "Thai",
-            "Punjabi",
-            "Tamil",
-            "Swedish",
-            "Norwegian",
-            "Filipino",
-            "Urdu",
-            "Flemish",
-            "Hebrew",
-            "Bengali",
-            "Danish"
-        ];
+        this.languages = this.util.getSupportedLanguages();
         this.dataYearMin = 2000;
         this.dataYearMax = 2000;
     }

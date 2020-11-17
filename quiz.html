@@ -24,10 +24,23 @@
             <header>
                 <h1>Streaming Stats Quiz</h1>
             </header>
-            <div class="quiz">
-                <button onclick="submit(this)">Submit</button>
-            </div>
-        </section>
+            <section class="quiz">
+                <h3>What type of media do you <strong>MOST</strong> prefer?</h3>
+                <div>
+                    <input type="radio" id="movies" name="dataType" value="movies" onchange="setDataType(this.value)" checked>
+                    <label for="movies">Movies</label>
+                </div>
+                <div>
+                    <input type="radio" id="tv" name="dataType" value="tv_shows" onchange="setDataType(this.value)">
+                    <label for="tv">TV Shows</label>
+                </div>
+                <div class="submit">
+                    <button onclick="render()">Submit</button>
+                </div>
+            </section>
+            <h4 class="page">
+                questions 1/2
+            </h4>
         <script src="js/Util.js" ></script>
         <script src="js/Quiz.js" ></script>
     </body>

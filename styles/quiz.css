@@ -12,3 +12,11 @@ a, a:hover, a:focus, a:active {
 a:hover {
   font-weight: bold;
 }
+
+.quiz {
+  padding: 20px;
+}
+
+h1, h4, .submit {
+  text-align: center;
+}
