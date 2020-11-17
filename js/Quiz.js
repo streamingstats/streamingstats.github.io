@@ -13,7 +13,7 @@ class Quiz {
         this.dataYearMin = 1901;
         this.dataYearMax = 2020;
         this.yearMin = this.dataYearMin;
-        this.dataYearMax = this.dataYearMax;
+        this.yearMax = this.dataYearMax;
         this.util = new Util();
         this.languages = this.util.getSupportedLanguages();
 
@@ -29,8 +29,6 @@ class Quiz {
     }
 
     render() {
-        console.log(this.dataType);
-
         let quizDiv = d3.select('.quiz');
 
         this.clearForm(quizDiv);
@@ -43,10 +41,15 @@ class Quiz {
             this.renderLanguages(quizDiv);
             this.renderGenres(quizDiv);
         }
+        quizDiv.append("div")
+            .classed("submit", true)
+            .append("button")
+            .text("Submit")
+            .attr("onclick", "submit()")
+        ;
     }
 
     setDataType(dataType) {
-        console.log(dataType);
         this.dataType = dataType;
     }
 
@@ -65,14 +68,12 @@ class Quiz {
     }
 
     setYearMin(yearMin) {
-        console.log(yearMin);
         if (yearMin >= this.dataYearMin && yearMin <= this.dataYearMax) {
             this.yearMin = yearMin;
         }
     }
 
     setYearMax(yearMax) {
-        console.log(yearMax);
         if (yearMax >= this.dataYearMin && yearMax <= this.dataYearMax) {
             this.yearMax = yearMax;
         }
@@ -119,6 +120,11 @@ class Quiz {
             .text("How new/old do you like your media? Pick an age range.")
         ;
 
+        yearDiv.append("label")
+            .attr("for", "minYear")
+            .text("Min Year: ")
+        ;
+
         yearDiv.append("input")
             .attr("type", "number")
             .attr("id", "minYear")
@@ -126,6 +132,11 @@ class Quiz {
             .attr("max", this.dataYearMax)
             .attr("value", this.dataYearMin)
             .attr("onchange", "setYearMin(this.value)")
+        ;
+
+        yearDiv.append("label")
+            .attr("for", "maxYear")
+            .text("Max Year: ")
         ;
 
         yearDiv.append("input")
@@ -149,6 +160,11 @@ class Quiz {
             .html("What level of <strong>Rotten Tomatoes</strong> Rating would you sit and watch?")
         ;
 
+        ratingDiv.append("label")
+            .attr("for", "minRating")
+            .text("Min Rating: ")
+        ;
+
         ratingDiv.append("input")
             .attr("type", "number")
             .attr("id", "minRating")
@@ -156,6 +172,11 @@ class Quiz {
             .attr("max", 100)
             .attr("value", 0)
             .attr("onchange", "setRatingMin(this.value)")
+        ;
+
+        ratingDiv.append("label")
+            .attr("for", "maxRating")
+            .text("Max Rating: ")
         ;
 
         ratingDiv.append("input")
@@ -168,7 +189,7 @@ class Quiz {
         ;
     }
 
-    renderAges() {
+    renderAges(quizDiv) {
         let ageDiv = quizDiv
             .append("div")
             .attr("id", "ageRange")
@@ -198,37 +219,56 @@ class Quiz {
         });
     }
 
-    renderGenres() {
-        let sidenav = d3.select(".sidenav");
-
-        if (this.dataType === "movies") {
-            let genreDiv = sidenav.append("div")
+    renderGenres(quizDiv) {
+        let genreDiv = quizDiv.append("div")
             .attr("id", "genres");
 
-            genreDiv.append("h3")
-            .text("Genres")
-            
-            this.genres.forEach(genre => {
-                let div = genreDiv.append("div");
-    
-                div.append("input")
-                    .attr("id", genre)
-                    .attr("type", "checkbox")
-                    .attr("name", "genres")
-                    .attr("value", genre)
-                    .attr("checked", true)
-                    .attr("onclick", "updateGenres(this.value, this.checked)")
-                ;
-    
-                div.append("label")
-                    .attr("for", genre)
-                    .text(genre)
-                ;
-            });
+        genreDiv.append("h3")
+            .text("What Genre of media do you regularly watch?")
+        
+        this.genres.forEach(genre => {
+            let div = genreDiv.append("div");
 
-        } else {
-            sidenav.select("#genres").remove();
-        }
+            div.append("input")
+                .attr("id", genre)
+                .attr("type", "checkbox")
+                .attr("name", "genres")
+                .attr("value", genre)
+                .attr("checked", true)
+                .attr("onclick", "updateGenres(this.value, this.checked)")
+            ;
+
+            div.append("label")
+                .attr("for", genre)
+                .text(genre)
+            ;
+        });
+    }
+
+    renderLanguages(quizDiv) {
+        let languageDiv = quizDiv.append("div")
+            .attr("id", "languages");
+
+        languageDiv.append("h3")
+            .text("What Languages do you regularly watch your media in?")
+
+        this.languages.forEach(language => {
+            let div = languageDiv.append("div");
+
+            div.append("input")
+                .attr("id", language)
+                .attr("type", "checkbox")
+                .attr("name", "languages")
+                .attr("value", language)
+                .attr("checked", true)
+                .attr("onclick", "updateLanguages(this.value, this.checked)")
+            ;
+
+            div.append("label")
+                .attr("for", language)
+                .text(language)
+            ;
+        });
     }
 
     clearForm(quizDiv) {
@@ -244,15 +284,30 @@ class Quiz {
         ;            
     }
 
-    submit(form) {
-        console.log(form);
+    submit() {
+        let data = {
+            dataType: this.dataType,
+            ageRange: this.ageRange,
+            years: {
+                yearMin: this.yearMin,
+                yearMax: this.yearMax
+            },
+            ratings: {
+                ratingMin: this.ratingMin,
+                ratingMax: this.ratingMax
+            },
+            languages: this.languages,
+            genres: this.genres 
+        }
+        this.util.setLocalStorage("answers", data)
+        window.location.href = "./data.html";
     }
 }
 
 const quiz = new Quiz();
 
-function submit(form) {
-    quiz.submit(form);
+function submit() {
+    quiz.submit();
 }
 
 function setDataType(dataType) {

@@ -7,9 +7,10 @@ class Home {
         let text = this.getText();
 
         d3.select(".userPrompt")
-            .selectAll("a")
+            .selectAll("div")
             .data(text)
             .enter()
+            .append("div")
             .append("a")
             .attr("href", d => d.link)
             .text(d => d.text)
@@ -18,7 +19,7 @@ class Home {
 
     getText() {
         let text = [{text: "Take Quiz", link: "quiz.html"}];
-        let answers = this.util.getLocalStorage("answers", []);
+        let answers = this.util.getLocalStorage("answers");
 
         if (answers !== null) {
             text = [
