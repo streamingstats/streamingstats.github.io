@@ -3,6 +3,7 @@ class Main {
         this.dataType = "movies";
         this.chartType = "bar";
         this.util = new Util();
+        this.getCachedData();
 
         this.charts = {
             "bar": new Bar(),
@@ -15,6 +16,18 @@ class Main {
         this.fetchData();
     }
 
+    getCachedData() {
+        this.cachedData = this.util.getLocalStorage("answers");
+
+        if (this.cachedData === null) {
+            this.cachedData = {
+
+            };
+        }
+
+        this.util.setLocalStorage("answers", this.cachedData);
+    }
+
     // Add in ability for user to select movies that are of interest to them.
     // Filter results of data to each service.
 
@@ -24,35 +37,7 @@ class Main {
         this.ratingMin = 0;
         this.ratingMax = 100;
         this.data = [];
-        this.languages = [
-            "English",
-            "Spanish", 
-            "Portuguese",
-            "Italian",
-            "French",
-            "German",
-            "Japanese",
-            "Chinese",
-            "Mandarin",
-            "Hindi",
-            "Russian",
-            "Korean",
-            "Arabic",
-            "Persian",
-            "Turkish",
-            "Cantonese",
-            "Thai",
-            "Punjabi",
-            "Tamil",
-            "Swedish",
-            "Norwegian",
-            "Filipino",
-            "Urdu",
-            "Flemish",
-            "Hebrew",
-            "Bengali",
-            "Danish"
-        ];
+        this.languages = this.util.getSupportedLanguages();
         this.dataYearMin = 2000;
         this.dataYearMax = 2000;
     }
