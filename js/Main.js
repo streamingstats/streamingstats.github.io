@@ -1,6 +1,5 @@
 class Main {
     constructor() {
-        this.chartType = "bar";
         this.data = [];
         this.util = new Util();
         this.getSelections();
@@ -22,6 +21,7 @@ class Main {
         if (this.selections === null) {
             this.selections = {
                 ageRange: this.util.getSupportedAgeRange(),
+                chartType: "bar",
                 dataType: "movies",
                 genres: this.util.getSupportedGenres(),
                 languages: this.util.getSupportedLanguages(),
@@ -51,7 +51,7 @@ class Main {
     }
 
     setChartType(chartType) {
-        this.chartType = chartType;
+        this.selections.chartType = chartType;
         this.renderChart();
     }
 
@@ -192,7 +192,7 @@ class Main {
             selectedData.push(row);
         }
 
-        this.charts[this.chartType].render(selectedData, services, this.selections.genres);
+        this.charts[this.selections.chartType].render(selectedData, services, this.selections.genres);
         this.charts.info.render(selectedData, services, this.selections.genres);
     }
 

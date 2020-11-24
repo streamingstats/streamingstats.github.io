@@ -265,6 +265,7 @@ class Quiz {
     submit() {
         let data = {
             dataType: this.dataType,
+            chartType: "bar",
             ageRange: this.ageRange,
             years: {
                 min: this.yearMin,
@@ -277,7 +278,6 @@ class Quiz {
             languages: this.languages,
             genres: this.genres 
         }
-        console.log(data);
         this.util.setLocalStorage("selections", data)
         window.location.href = "./data.html";
     }
