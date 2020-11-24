@@ -1,31 +1,14 @@
 class Quiz {
     constructor() {
+        this.util = new Util();
         this.dataType = "movies";
         this.genres = [];
-        this.ageRange = [
-            "7+",
-            "13+",
-            "16+",
-            "18+"
-        ];
+        this.ageRange = [];
         this.ratingMin = 0;
         this.ratingMax = 100;
-        this.dataYearMin = 1901;
-        this.dataYearMax = 2020;
-        this.yearMin = this.dataYearMin;
-        this.yearMax = this.dataYearMax;
-        this.util = new Util();
-        this.languages = this.util.getSupportedLanguages();
-
-        d3.csv(`data/movies.csv`, (row) => {
-            let genre = row['Genres']
-            let genreArray = genre.split(",");
-            let emptyIndex = genreArray.indexOf("")
-            if (emptyIndex !== -1) {
-                genreArray.splice(emptyIndex, 1);
-            }
-            this.genres = this.util.union(this.genres, genreArray);
-        });
+        this.yearMin = this.util.getSupportedYearMin(this.dataType);
+        this.yearMax = this.util.getSupportedYearMax();
+        this.languages = [];
     }
 
     render() {
@@ -53,11 +36,6 @@ class Quiz {
         this.dataType = dataType;
     }
 
-    setChartType(chartType) {
-        this.chartType = chartType;
-        this.renderChart();
-    }
-
     updateLanguages(language, add) {
         let index = this.languages.indexOf(language);
         if (add && index === -1) {
@@ -68,13 +46,13 @@ class Quiz {
     }
 
     setYearMin(yearMin) {
-        if (yearMin >= this.dataYearMin && yearMin <= this.dataYearMax) {
+        if (yearMin >= this.util.getSupportedYearMin(this.dataType) && yearMin <= this.util.getSupportedYearMax()) {
             this.yearMin = yearMin;
         }
     }
 
     setYearMax(yearMax) {
-        if (yearMax >= this.dataYearMin && yearMax <= this.dataYearMax) {
+        if (yearMax >= this.util.getSupportedYearMin(this.dataType) && yearMax <= this.util.getSupportedYearMax()) {
             this.yearMax = yearMax;
         }
     }
@@ -110,6 +88,9 @@ class Quiz {
     }
 
     renderYears(quizDiv) {
+        let supportedMin = this.util.getSupportedYearMin(this.dataType);
+        let supportedMax = this.util.getSupportedYearMax();
+
         let yearDiv = quizDiv
             .append("div")
             .attr("id", "years")
@@ -128,9 +109,9 @@ class Quiz {
         yearDiv.append("input")
             .attr("type", "number")
             .attr("id", "minYear")
-            .attr("min", this.dataYearMin)
-            .attr("max", this.dataYearMax)
-            .attr("value", this.dataYearMin)
+            .attr("min", supportedMin)
+            .attr("max", supportedMax)
+            .attr("value", supportedMin)
             .attr("onchange", "setYearMin(this.value)")
         ;
 
@@ -142,9 +123,9 @@ class Quiz {
         yearDiv.append("input")
             .attr("type", "number")
             .attr("id", "maxYear")
-            .attr("min", this.dataYearMin)
-            .attr("max", this.dataYearMax)
-            .attr("value", this.dataYearMax)
+            .attr("min", supportedMin)
+            .attr("max", supportedMax)
+            .attr("value", supportedMax)
             .attr("onchange", "setYearMax(this.value)")
         ;
     }
@@ -200,7 +181,7 @@ class Quiz {
             .html("What Age categories of Media would you permit in your home?")
         ;
 
-        this.ageRange.forEach(age => {
+        this.util.getSupportedAgeRange().forEach(age => {
             let div = ageDiv.append("div");
 
             div.append("input")
@@ -225,7 +206,7 @@ class Quiz {
         genreDiv.append("h3")
             .text("What Genre of media do you regularly watch?")
         
-        this.genres.forEach(genre => {
+        this.util.getSupportedGenres().forEach(genre => {
             let div = genreDiv.append("div");
 
             div.append("input")
@@ -250,7 +231,7 @@ class Quiz {
         languageDiv.append("h3")
             .text("What Languages do you regularly watch your media in?")
 
-        this.languages.forEach(language => {
+        this.util.getSupportedLanguages().forEach(language => {
             let div = languageDiv.append("div");
 
             div.append("input")
@@ -286,14 +267,10 @@ class Quiz {
             dataType: this.dataType,
             ageRange: this.ageRange,
             years: {
-                dataMin: this.dataYearMin,
-                dataMax: this.dataYearMax,
                 min: this.yearMin,
                 max: this.yearMax
             },
             ratings: {
-                dataMin: 0,
-                dataMax: 100,
                 min: this.ratingMin,
                 max: this.ratingMax
             },
@@ -301,7 +278,7 @@ class Quiz {
             genres: this.genres 
         }
         console.log(data);
-        this.util.setLocalStorage("answers", data)
+        this.util.setLocalStorage("selections", data)
         window.location.href = "./data.html";
     }
 }
@@ -314,10 +291,6 @@ function submit() {
 
 function setDataType(dataType) {
     quiz.setDataType(dataType);
-}
-
-function setChartType(chartType) {
-    quiz.setChartType(chartType);
 }
 
 function updateLanguages(language, checked) {

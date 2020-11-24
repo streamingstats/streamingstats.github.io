@@ -67,4 +67,53 @@ class Util {
             "Danish"
         ];
     }
+
+    getSupportedGenres() {
+        return [
+           "Action",
+           "Adventure",
+           "Animation",
+           "Biography",
+           "Comedy",
+           "Crime",
+           "Documentary",
+           "Drama",
+           "Family",
+           "Fantasy",
+           "Film-Noir",
+           "Game-Show",
+           "History",
+           "Horror",
+           "Music",
+           "Musical",
+           "Mystery",
+           "News",
+           "Reality-TV",
+           "Romance",
+           "Sci-Fi",
+           "Short",
+           "Sport",
+           "Talk-Show",
+           "Thriller",
+           "War",
+           "Western",
+        ];
+    }
+
+    getSupportedYearMin(dataset) {
+        return dataset === "movies" ? 1901 : 1902;
+    }
+
+    getSupportedYearMax() {
+        return 2020;
+    }
+
+    getSupportedAgeRange() {
+        return [
+            "7+",
+            "13+",
+            "16+",
+            "18+"
+        ];
+    }
 }

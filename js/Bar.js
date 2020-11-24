@@ -2,7 +2,6 @@ class Bar {
     constructor() {
         let chart = d3.select("#chart");
         let bounds = chart.node().getBoundingClientRect();
-        console.log(bounds);
         this.width = bounds.width;
         this.height = bounds.height;
         this.padding = 30;
@@ -12,7 +11,7 @@ class Bar {
 
         let countArray = [];
         for (let service in count) {
-            countArray.push({"service": service, "count": count[service]});
+            countArray.push({"service": service, "count": count[service].count});
         }
 
         let chart = d3.select("#chart")

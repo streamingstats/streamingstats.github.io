@@ -1,8 +1,9 @@
 class Main {
     constructor() {
         this.chartType = "bar";
+        this.data = [];
         this.util = new Util();
-        this.getCachedData();
+        this.getSelections();
 
         this.charts = {
             "bar": new Bar(),
@@ -15,41 +16,37 @@ class Main {
         this.fetchData();
     }
 
-    getCachedData() {
-        this.cachedData = this.util.getLocalStorage("answers");
+    getSelections() {
+        this.selections = this.util.getLocalStorage("selections");
 
-        console.log(this.cachedData);
-        if (this.cachedData === null) {
-            this.cachedData = {
-
+        if (this.selections === null) {
+            this.selections = {
+                ageRange: this.util.getSupportedAgeRange(),
+                dataType: "movies",
+                genres: this.util.getSupportedGenres(),
+                languages: this.util.getSupportedLanguages(),
+                ratings: {
+                    min: 0,
+                    max: 100,
+                },
+                years: {
+                    min: this.util.getSupportedYearMin("movies"),
+                    max: this.util.getSupportedYearMax(),
+                }
             };
- 
-            this.util.setLocalStorage("answers", this.cachedData);
+            this.setSelections();
         }
+    }
 
-        this.dataType = this.cachedData.dataType;
-        this.ageRange = this.cachedData.ageRange;
-        this.dataYearMin = this.cachedData.years.yearsMin;
-        this.dataYearMax = this.cachedData.years.yearsMax;
-
+    setSelections() {
+        this.util.setLocalStorage("selections", this.selections);
     }
 
     // Add in ability for user to select movies that are of interest to them.
     // Filter results of data to each service.
 
-    clearData() {
-        this.ageRange = [];
-        this.genres = [];
-        this.ratingMin = 0;
-        this.ratingMax = 100;
-        this.data = [];
-        this.languages = this.util.getSupportedLanguages();
-        this.dataYearMin = 2000;
-        this.dataYearMax = 2000;
-    }
-
     setDataType(dataType) {
-        this.dataType = dataType;
+        this.selections.dataType = dataType;
         this.fetchData();
     }
 
@@ -59,87 +56,59 @@ class Main {
     }
 
     updateLanguages(language, add) {
-        let index = this.languages.indexOf(language);
+        let index = this.selections.languages.indexOf(language);
         if (add && index === -1) {
-            this.languages.push(language);
+            this.selections.languages.push(language);
         } else if (!add && index !== -1) {
-            this.languages.splice(index, 1);
+            this.selections.languages.splice(index, 1);
         }
+        console.log(this.selections);
     }
 
     setYearMin(yearMin) {
-        if (yearMin >= this.dataYearMin && yearMin <= this.dataYearMax) {
-            this.yearMin = yearMin;
+        if (yearMin >= this.util.getSupportedYearMin(this.dataType) && yearMin <= this.util.getSupportedYearMax()) {
+            this.selections.years.min = yearMin;
         }
     }
 
     setYearMax(yearMax) {
-        if (yearMax >= this.dataYearMin && yearMax <= this.dataYearMax) {
-            this.yearMax = yearMax;
+        if (yearMax >= this.util.getSupportedYearMin(this.dataType) && yearMax <= this.util.getSupportedYearMax()) {
+            this.selections.years.max = yearMax;
         }
     }
 
     updateAgeRange(age, add) {
-        let index = this.ageRange.indexOf(age);
+        let index = this.selections.ageRange.indexOf(age);
         if (add && index === -1) {
-            this.ageRange.push(age);
+            this.selections.ageRange.push(age);
         } else if (!add && index !== -1) {
-            this.ageRange.splice(index, 1);
+            this.selections.ageRange.splice(index, 1);
         }
     }
 
     updateGenres(genre, add) {
-        let index = this.genres.indexOf(genre);
+        let index = this.selections.genres.indexOf(genre);
         if (add && index === -1) {
-            this.genres.push(genre);
+            this.selections.genres.push(genre);
         } else if (!add && index !== -1) {
-            this.genres.splice(index, 1);
+            this.selections.genres.splice(index, 1);
         }
     }
 
     setRatingMin(ratingMin) {
         if (ratingMin >= 0 && ratingMin <= 100) {
-            this.ratingMin = ratingMin;
+            this.selections.ratings.min = ratingMin;
         }
     }
 
     setRatingMax(ratingMax) {
         if (ratingMax >= 0 && ratingMax <= 100) {
-            this.ratingMax = ratingMax;
+            this.selections.ratings.max = ratingMax;
         }
     }
 
     fetchData() {
-        this.clearData();
-        d3.csv(`data/${this.dataType}.csv`, (row) => {
-            let year = +row['Year'];
-            if (year < this.dataYearMin) {
-                this.dataYearMin = year;
-            }
-
-            if (year > this.dataYearMax) {
-                this.dataYearMax = year;
-            }
-
-            let age = row['Age'];
-            if (age !== "" && 
-                age !== "all" && 
-                this.ageRange.indexOf(age) === -1) {
-                this.ageRange.push(age);
-            }
-            this.ageRange.sort(this.util.sortInts);
-
-            if (this.dataType === "movies") {
-                let genre = row['Genres']
-                let genreArray = genre.split(",");
-                let emptyIndex = genreArray.indexOf("")
-                if (emptyIndex !== -1) {
-                    genreArray.splice(emptyIndex, 1);
-                }
-                this.genres = this.util.union(this.genres, genreArray);
-            }
-            return row;
-        })
+        d3.csv(`data/${this.selections.dataType}.csv`)
         .then((data) => {
             this.data = data;
             this.renderInputs();
@@ -148,27 +117,28 @@ class Main {
     }
 
     renderChart() {
+        this.setSelections();
         this.clearChart();
-        let localData = [];
-        let count = {
-            "Netflix": 0,
-            "Hulu": 0,
-            "Prime Video": 0,
-            "Disney+": 0,
+        let selectedData = [];
+        let services = {
+            "Netflix": {count: 0, movies: []},
+            "Hulu": {count: 0, movies: []},
+            "Prime Video": {count: 0, movies: []},
+            "Disney+": {count: 0, movies: []},
         };
 
         for (let row of this.data) {
-            if (row.Year < this.yearMin || row.Year > this.yearMax) {
+            if (row.Year < this.selections.years.min || row.Year > this.selections.years.max) {
                 continue;
             }
 
             let age = row.Age === "" ? "all" : row.Age;
-            if (age !== "all" && this.ageRange.indexOf(age) === -1) {
+            if (age !== "all" && this.selections.ageRange.indexOf(age) === -1) {
                 continue;
             }
 
             let rating = row['Rotten Tomatoes'];
-            if (rating < this.ratingMin || rating > this.ratingMax) {
+            if (rating < this.selections.ratings.min || rating > this.selections.ratings.max) {
                 continue;
             }
 
@@ -179,16 +149,14 @@ class Main {
                 if (languages.indexOf("") !== -1 ||
                     languages.indexOf("None") !== -1) {
                     found = true;
-                }
-                else {
+                } else {
                     for (let language of languages) {
-                        if (this.languages.indexOf(language) !== -1) {
+                        if (this.selections.languages.indexOf(language) !== -1) {
                             found = true;
                             break;
                         }
                     }
                 }
-
 
                 if (!found) {
                     continue;
@@ -202,7 +170,7 @@ class Main {
                     found = true;
                 } else {
                     for (let genre of genres) {
-                        if (this.genres.indexOf(genre) !== -1) {
+                        if (this.selections.genres.indexOf(genre) !== -1) {
                             found = true;
                             break;
                         }
@@ -214,15 +182,15 @@ class Main {
                 }
             }
 
-            for (let service in count) {
-                count[service] += parseInt(row[service]);
+            for (let service in services) {
+                services[service].count += parseInt(row[service]);
+                services[service].movies.push(row.Title);
             }
-            localData.push(row);
+            selectedData.push(row);
         }
 
-        this.charts[this.chartType].render(localData, count, this.genres);
-        console.log(this.genres);
-        this.charts.info.render(localData, count, this.genres);
+        this.charts[this.chartType].render(selectedData, services, this.selections.genres);
+        this.charts.info.render(selectedData, services, this.selections.genres);
     }
 
     clearChart() {
@@ -231,40 +199,63 @@ class Main {
 
     renderInputs() {
         this.renderYears();
+        this.renderRatings();
         this.renderAges();
         this.renderLanguages();
         this.renderGenres();
     }
 
     renderYears() {
-        this.yearMin = this.dataYearMin;
-        this.yearMax = this.dataYearMax;
+        let supportedMin = this.util.getSupportedYearMin(this.selections.dataType);
+        let supportedMax = this.util.getSupportedYearMax();
 
         let yearDiv = d3.select("#years");
         yearDiv.selectAll("input").remove();
         yearDiv.append("input")
         .attr("type", "number")
         .attr("id", "minYear")
-        .attr("min", this.dataYearMin)
-        .attr("max", this.dataYearMax)
-        .attr("value", this.dataYearMin)
+        .attr("min", supportedMin)
+        .attr("max", supportedMax)
+        .attr("value", this.selections.years.min)
         .attr("onchange", "setYearMin(this.value)");
 
         yearDiv.append("input")
         .attr("type", "number")
         .attr("id", "maxYear")
-        .attr("min", this.dataYearMin)
-        .attr("max", this.dataYearMax)
-        .attr("value", this.dataYearMax)
+        .attr("min", supportedMin)
+        .attr("max", supportedMax)
+        .attr("value", this.selections.years.max)
         .attr("onchange", "setYearMax(this.value)");
+    }
+
+    renderRatings() {
+        let supportedMin = 0;
+        let supportedMax = 100;
+
+        let yearDiv = d3.select("#ratings");
+        yearDiv.selectAll("input").remove();
+        yearDiv.append("input")
+        .attr("type", "number")
+        .attr("id", "minRating")
+        .attr("min", supportedMin)
+        .attr("max", supportedMax)
+        .attr("value", this.selections.ratings.min)
+        .attr("onchange", "setRatingMin(this.value)");
+
+        yearDiv.append("input")
+        .attr("type", "number")
+        .attr("id", "maxRating")
+        .attr("min", supportedMin)
+        .attr("max", supportedMax)
+        .attr("value", this.selections.ratings.max)
+        .attr("onchange", "setRatingMax(this.value)");
     }
 
     renderAges() {
         let ageDiv = d3.select("#ages")
-
         ageDiv.selectAll("*").remove();
 
-        this.ageRange.forEach(age => {
+        this.util.getSupportedAgeRange().forEach(age => {
             let div = ageDiv.append("div");
 
             div.append("input")
@@ -272,7 +263,7 @@ class Main {
                 .attr("type", "checkbox")
                 .attr("name", "ages")
                 .attr("value", age)
-                .attr("checked", true)
+                .attr("checked", this.selections.ageRange.indexOf(age) !== -1 ? true : null)
                 .attr("onclick", "updateAgeRange(this.value, this.checked)")
             ;
 
@@ -286,14 +277,14 @@ class Main {
     renderGenres() {
         let sidenav = d3.select(".sidenav");
 
-        if (this.dataType === "movies") {
+        if (this.selections.dataType === "movies") {
             let genreDiv = sidenav.append("div")
             .attr("id", "genres");
 
             genreDiv.append("h3")
             .text("Genres")
             
-            this.genres.forEach(genre => {
+            this.util.getSupportedGenres().forEach(genre => {
                 let div = genreDiv.append("div");
     
                 div.append("input")
@@ -301,7 +292,7 @@ class Main {
                     .attr("type", "checkbox")
                     .attr("name", "genres")
                     .attr("value", genre)
-                    .attr("checked", true)
+                    .attr("checked", this.selections.genres.indexOf(genre) !== -1 ? true : null)
                     .attr("onclick", "updateGenres(this.value, this.checked)")
                 ;
     
@@ -319,14 +310,14 @@ class Main {
     renderLanguages() {
         let sidenav = d3.select(".sidenav");
 
-        if (this.dataType === "movies") {
+        if (this.selections.dataType === "movies") {
             let languageDiv = sidenav.append("div")
             .attr("id", "languages");
 
             languageDiv.append("h3")
             .text("Languages")
 
-            this.languages.forEach(language => {
+            this.util.getSupportedLanguages().forEach(language => {
                 let div = languageDiv.append("div");
     
                 div.append("input")
@@ -334,7 +325,7 @@ class Main {
                     .attr("type", "checkbox")
                     .attr("name", "languages")
                     .attr("value", language)
-                    .attr("checked", true)
+                    .attr("checked", this.selections.languages.indexOf(language) !== -1 ? true : null)
                     .attr("onclick", "updateLanguages(this.value, this.checked)")
                 ;
     
