@@ -208,7 +208,6 @@ class Quiz {
                 .attr("type", "checkbox")
                 .attr("name", "ages")
                 .attr("value", age)
-                .attr("checked", true)
                 .attr("onclick", "updateAgeRange(this.value, this.checked)")
             ;
 
@@ -234,7 +233,6 @@ class Quiz {
                 .attr("type", "checkbox")
                 .attr("name", "genres")
                 .attr("value", genre)
-                .attr("checked", true)
                 .attr("onclick", "updateGenres(this.value, this.checked)")
             ;
 
@@ -260,7 +258,6 @@ class Quiz {
                 .attr("type", "checkbox")
                 .attr("name", "languages")
                 .attr("value", language)
-                .attr("checked", true)
                 .attr("onclick", "updateLanguages(this.value, this.checked)")
             ;
 
@@ -289,16 +286,21 @@ class Quiz {
             dataType: this.dataType,
             ageRange: this.ageRange,
             years: {
-                yearMin: this.yearMin,
-                yearMax: this.yearMax
+                dataMin: this.dataYearMin,
+                dataMax: this.dataYearMax,
+                min: this.yearMin,
+                max: this.yearMax
             },
             ratings: {
-                ratingMin: this.ratingMin,
-                ratingMax: this.ratingMax
+                dataMin: 0,
+                dataMax: 100,
+                min: this.ratingMin,
+                max: this.ratingMax
             },
             languages: this.languages,
             genres: this.genres 
         }
+        console.log(data);
         this.util.setLocalStorage("answers", data)
         window.location.href = "./data.html";
     }

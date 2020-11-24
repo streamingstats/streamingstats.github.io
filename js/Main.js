@@ -1,6 +1,5 @@
 class Main {
     constructor() {
-        this.dataType = "movies";
         this.chartType = "bar";
         this.util = new Util();
         this.getCachedData();
@@ -19,13 +18,20 @@ class Main {
     getCachedData() {
         this.cachedData = this.util.getLocalStorage("answers");
 
+        console.log(this.cachedData);
         if (this.cachedData === null) {
             this.cachedData = {
 
             };
+ 
+            this.util.setLocalStorage("answers", this.cachedData);
         }
 
-        this.util.setLocalStorage("answers", this.cachedData);
+        this.dataType = this.cachedData.dataType;
+        this.ageRange = this.cachedData.ageRange;
+        this.dataYearMin = this.cachedData.years.yearsMin;
+        this.dataYearMax = this.cachedData.years.yearsMax;
+
     }
 
     // Add in ability for user to select movies that are of interest to them.
