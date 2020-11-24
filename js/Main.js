@@ -220,8 +220,9 @@ class Main {
             localData.push(row);
         }
 
-        this.charts[this.chartType].render(localData, count);
-        this.charts.info.render(localData, count);
+        this.charts[this.chartType].render(localData, count, this.genres);
+        console.log(this.genres);
+        this.charts.info.render(localData, count, this.genres);
     }
 
     clearChart() {
