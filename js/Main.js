@@ -183,8 +183,11 @@ class Main {
             }
 
             for (let service in services) {
-                services[service].count += parseInt(row[service]);
-                services[service].movies.push(row.Title);
+                let add = parseInt(row[service])
+                services[service].count += add;
+                if (add === 1) {
+                    services[service].movies.push(row.Title);
+                }
             }
             selectedData.push(row);
         }

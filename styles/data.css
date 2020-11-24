@@ -74,6 +74,14 @@ main {
 
 .textField {
   flex-grow: 1;
+  border-right: 2px solid #000000;
+  border-top: 2px solid #000000;
+  border-bottom: 2px solid #000000;
+  overflow-y: auto;
+}
+
+.textField > p{
+  color: #000000;
 }
 
 .amazon {
