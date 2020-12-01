@@ -7,7 +7,7 @@ class Main {
         this.charts = {
             "bar": new Bar(),
             "scatterplot": new Scatterplot(),
-            "stacked": new Stacked(),
+            "stacked": new Grouped(),
             "sunburst": new Sunburst(),
             "profiles": new Profiles(),
             "info": new Info(),
