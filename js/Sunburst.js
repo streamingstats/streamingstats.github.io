@@ -31,7 +31,7 @@ class Sunburst {
 
   constructor() {
     this.burst = {
-      name: "flare",
+      name: "movies",
       children: [
         {name:"Netflix", children:[]},
         {name:"Amazon Prime", children:[]},
@@ -61,7 +61,6 @@ class Sunburst {
 
   render(data, counts, genres) {
     this.formatData(data, genres);
-    console.log(this.burst);
     this.createChart();
   }
 
@@ -126,6 +125,16 @@ class Sunburst {
     const g = svg.append("g")
       .attr("transform", `translate(${this.width / 2}, ${this.height / 2})`)
 
+    g.append("circle")
+      .datum(root)   
+      .attr("style", "z-index:-1")
+      .attr("r", this.radius)
+      .attr("fill", "none")
+      .attr("pointer-events", "all")
+      .attr("cursor", "pointer")
+      .on("click", event => this.clicked(event, root, path, label, g, this.radius, this.eventMethods));
+    ;
+
     const path = g.append("g")
       .selectAll("path")
       .data(nodesWithParents)
@@ -151,15 +160,6 @@ class Sunburst {
       .attr("transform", d => this.eventMethods.labelTransform(d.current, this.radius))
       .text(d => d.data.name)
     ;
-
-    g.append("circle")
-      .datum(root)   
-      .attr("r", this.radius)
-      .attr("fill", "none")
-      .attr("pointer-events", "all")
-      .attr("cursor", "pointer")
-      .on("click", event => this.clicked(event, root, path, label, g, this.radius, this.eventMethods));
-    ;
       
     path.filter(d => d.children)
       .style("cursor", "pointer")
@@ -167,7 +167,7 @@ class Sunburst {
     ;
 
     path.append("title")
-      .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${this.format(d.value)}`)
+      .text(d => d.parent === root ? d.data.name : `${d.parent.data.name} - ${d.data.name}`)
     ;
   }
 
