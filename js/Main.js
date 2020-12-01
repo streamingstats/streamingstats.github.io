@@ -195,7 +195,7 @@ class Main {
             selectedData.push(row);
         }
 
-        this.charts[this.selections.chartType].chart.render(selectedData, services, this.selections.genres);
+        this.charts[this.selections.chartType].chart.render(selectedData, services, this.selections);
         this.infoChart.render(selectedData, services, this.selections.genres);
     }
 

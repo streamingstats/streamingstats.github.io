@@ -30,15 +30,6 @@ class Sunburst {
   }
 
   constructor() {
-    this.burst = {
-      name: "movies",
-      children: [
-        {name:"Netflix", children:[]},
-        {name:"Amazon Prime", children:[]},
-        {name:"Hulu", children:[]},
-        {name:"Disney", children:[]}
-      ]
-    };
     this.util = new Util();
     this.format = d3.format(",d");
     let chart = d3.select("#chart");
@@ -59,34 +50,48 @@ class Sunburst {
     ;
   }
 
-  render(data, counts, genres) {
-    this.formatData(data, genres);
+  render(data, counts, selections) {
+    this.burst = {
+      name: selections.dataType,
+      children: [
+        {name:"Netflix", children:[]},
+        {name:"Amazon Prime", children:[]},
+        {name:"Hulu", children:[]},
+        {name:"Disney", children:[]}
+      ]
+    };
+
+    if (selections.dataType === "movies") {
+      this.formatData(data, selections.genres, "Genres");
+    } else {
+      this.formatData(data, selections.ageRange, "Age");
+    }
     this.createChart();
   }
 
-  formatData(data, genres) {
+  formatData(data, options, category) {
 
-    genres.forEach(genre => {
-      this.burst.children[0]['children'].push({name:genre, size:0});
-      this.burst.children[1]['children'].push({name:genre, size:0});
-      this.burst.children[2]['children'].push({name:genre, size:0});
-      this.burst.children[3]['children'].push({name:genre, size:0});
+    options.forEach(option => {
+      this.burst.children[0]['children'].push({name:option, size:0});
+      this.burst.children[1]['children'].push({name:option, size:0});
+      this.burst.children[2]['children'].push({name:option, size:0});
+      this.burst.children[3]['children'].push({name:option, size:0});
     });
 
     for (let i = 0; i < data.length; i++)
     {
-        let category = data[i]['Genres']
-        let genreArray = category.split(",");
-        let emptyIndex = genreArray.indexOf("")
+        let categories = data[i][category]
+        let categoryArray = categories.split(",");
+        let emptyIndex = categoryArray.indexOf("")
         if (emptyIndex !== -1) {
-            genreArray.splice(emptyIndex, 1);
+            categoryArray.splice(emptyIndex, 1);
         }
 
-        for (let j = 0; j < genreArray.length; j++)
+        for (let j = 0; j < categoryArray.length; j++)
         {
-            for (let k = 0; k < genres.length; k++)
+            for (let k = 0; k < options.length; k++)
             {
-                if (genres[k] == genreArray[j])
+                if (options[k] == categoryArray[j])
                 {
                   if (data[i]['Netflix'] == "1")
                   {
