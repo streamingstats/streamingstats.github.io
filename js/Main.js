@@ -5,13 +5,16 @@ class Main {
         this.getSelections();
 
         this.charts = {
-            "bar": new Bar(),
-            "scatterplot": new Scatterplot(),
-            "stacked": new Grouped(),
-            "sunburst": new Sunburst(),
-            "profiles": new Profiles(),
-            "info": new Info(),
+            "bar": {label: "Quantity", chart: new Bar()},
+            "scatterplot": {label: "Scatterplot",chart: new Scatterplot()},
+            "stacked": {label: "IMDB Ratings", chart: new Grouped()},
+            "sunburst": {label: "Category Breakdown", chart: new Sunburst()},
+            "profiles": {label: "Profiles", chart: new Profiles()},
         }
+
+        this.renderDataTypes();
+        this.renderChartTypes();
+        this.infoChart = new Info();
         this.fetchData();
     }
 
@@ -142,7 +145,7 @@ class Main {
                 continue;
             }
 
-            if (this.dataType === "movies") {
+            if (this.selections.dataType === "movies") {
                 let languages = row.Language.split(",");
 
                 let found = false;
@@ -164,7 +167,7 @@ class Main {
 
                 let genres = row.Genres.split(",");
                 found = false;
-                
+
                 if (genres.indexOf("") !== -1 ||
                     genres.indexOf("None") !== -1) {
                     found = true;
@@ -192,8 +195,8 @@ class Main {
             selectedData.push(row);
         }
 
-        this.charts[this.selections.chartType].render(selectedData, services, this.selections.genres);
-        this.charts.info.render(selectedData, services, this.selections.genres);
+        this.charts[this.selections.chartType].chart.render(selectedData, services, this.selections.genres);
+        this.infoChart.render(selectedData, services, this.selections.genres);
     }
 
     clearChart() {
@@ -206,6 +209,51 @@ class Main {
         this.renderAges();
         this.renderLanguages();
         this.renderGenres();
+    }
+
+    renderDataTypes() {
+        let dataTypes = {
+            "movies": "Movies",
+            "tv_shows": "TV Shows"
+        }
+        let dataTypeDiv = d3.select("#dataTypes");
+        dataTypeDiv.selectAll("*").remove();
+
+
+        
+        for (let dataType in dataTypes) {
+            let div = dataTypeDiv.append("div");
+
+            div.append("input")
+                .attr("id", dataType)
+                .attr("type", "radio")
+                .attr("name", "dataType")
+                .attr("value", dataType)
+                .attr("checked", this.selections.dataType === dataType ? true : null)
+                .attr("onclick", "setDataType(this.value)")
+            ;
+
+            div.append("label")
+                .attr("for", dataType)
+                .text(dataTypes[dataType])
+            ;
+        }
+    }
+
+    renderChartTypes() {
+        let select = d3.select("#chartTypes")
+            .append("select")
+            .attr("onchange", "setChartType(this.value)")
+        ;
+
+        for (let chart in this.charts) {
+            select.append("option")
+                .attr("value", chart)
+                .attr("selected", this.selections.chartType === chart ? true : null)
+                .text(this.charts[chart].label)
+                .attr("onchange", "setChartType(this.value)")
+            ;
+        }
     }
 
     renderYears() {

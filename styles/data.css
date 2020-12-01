@@ -24,7 +24,7 @@ body {
 }
 
 header {
-  background-color: #333333;
+  background-color: #000000;
   justify-content: space-between;
   height: 8vh;
 }
@@ -45,7 +45,7 @@ nav {
 
 .sidenav {
   width: 20vw;
-  background-color: #333333;
+  background-color: #000000;
   overflow-y: auto;
 }
 
@@ -55,14 +55,6 @@ nav {
 
 .updateDiv {
   text-align: center;
-}
-
-#moviesList {
-  flex-grow: 3;
-}
-
-#links {
-  flex-grow: 1;
 }
 
 main {
@@ -80,8 +72,17 @@ main {
   overflow-y: auto;
 }
 
-.textField > p{
+.textField > p {
   color: #000000;
+}
+
+.textField > h3 {
+  color: #000000;
+  border-bottom: 2px solid #000000;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  background-color: #AAAAAA;
 }
 
 .amazon {

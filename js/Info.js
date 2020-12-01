@@ -5,18 +5,22 @@ class Info {
 
     render(data, services) {
         for (let service in services) {
-            this.clearData(this.service);
+            this.clearData(service);
             this.loadData(service, services[service]);
         }
     }
 
     clearData(service) {
-        d3.select(`#${service}List`).selectAll("*").remove();
+        let parsedService = service.toLowerCase().replace(" ", "").replace("+", "");
+        d3.select(`#${parsedService}List`).selectAll("*").remove();
     }
 
     loadData(service, data) {
         let parsedService = service.toLowerCase().replace(" ", "").replace("+", "");
         let listDiv = d3.select(`#${parsedService}List`);
+
+        listDiv.append("h3")
+            .text(service)
         
         data.movies.forEach(title => {
             listDiv.append("p")
