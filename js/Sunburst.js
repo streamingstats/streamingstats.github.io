@@ -6,11 +6,11 @@
 class Sunburst {
   eventMethods = {
     arcVisible: function(d) {
-      return d.y1 <= 3 && d.y0 >= 1 && d.x1 > d.x0;
+      return d.y1 <= 2 && d.y0 >= .65 && d.x1 > d.x0;
     },
   
     labelVisible: function(d) {
-      return d.y1 <= 3 && d.y0 >= 1 && (d.y1 - d.y0) * (d.x1 - d.x0) > 0.03;
+      return d.y1 <= 2 && d.y0 >= .65 && (d.y1 - d.y0) * (d.x1 - d.x0) > 0.03;
     },
   
     labelTransform: function(d, radius) {
@@ -113,7 +113,6 @@ class Sunburst {
 
   createChart() {
     let root = this.partition(this.burst);
-    console.log(root);
     const color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, this.burst.children.length + 1));
     const nodesWithParents = root.descendants().slice(1);
     root.each(d => d.current = d);
@@ -153,19 +152,18 @@ class Sunburst {
       .text(d => d.data.name)
     ;
 
-    let parent = g.append("circle")
+    g.append("circle")
       .datum(root)   
       .attr("r", this.radius)
       .attr("fill", "none")
       .attr("pointer-events", "all")
       .attr("cursor", "pointer")
+      .on("click", event => this.clicked(event, root, path, label, g, this.radius, this.eventMethods));
     ;
       
-    parent.on("click", event => this.clicked(event, root, parent, path, label, g, this.radius, this.eventMethods));
-
     path.filter(d => d.children)
       .style("cursor", "pointer")
-      .on("click", event => this.clicked(event, root, parent, path, label, g, this.radius, this.eventMethods))
+      .on("click", event => this.clicked(event, root, path, label, g, this.radius, this.eventMethods))
     ;
 
     path.append("title")
@@ -173,15 +171,11 @@ class Sunburst {
     ;
   }
 
-  clicked(node, root, parent, path, label, g, radius, eventMethods) {
-    console.log(node);
-    console.log(parent);
-    parent.datum(node.parent || root);
-
+  clicked(node, root, path, label, g, radius, eventMethods) {
     root.each(d => d.target = {
             x0: Math.max(0, Math.min(1, (d.x0 - node.x0) / (node.x1 - node.x0))) * 2 * Math.PI,
             x1: Math.max(0, Math.min(1, (d.x1 - node.x0) / (node.x1 - node.x0))) * 2 * Math.PI,
-            y0: Math.max(0, d.y0 - node.depth),
+            y0: node === root ? Math.max(0, d.y0 - node.depth) : .66,
             y1: Math.max(0, d.y1 - node.depth)
         });
 
