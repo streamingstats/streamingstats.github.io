@@ -6,7 +6,10 @@ class Sunburst {
           {name:"Hulu", children:[]},
           {name:"Disney", children:[]}
       ];
-      this.util = new Util();
+      this.w = 2400;
+      this.h = 600;
+      this.padding = 40;
+      this.radius = this.w / 6;
     }
 
     render(data, counts, genres) {
@@ -53,6 +56,13 @@ class Sunburst {
                 }
             }
         }
-        console.log(this.burst)
+
+        let svg = d3.select('#chart')
+                    .append("svg")
+					.attr("width", this.w)
+                    .attr("height", this.h);
+
+        let nodes = d3.partition().nodes(this.burst)       
+        console.log(nodes)
     }
 }
