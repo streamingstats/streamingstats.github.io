@@ -8,7 +8,6 @@ class Grouped {
         this.groupedIMDB = [];
         this.groupedRT = [];
 
-        console.log(genres);
         this.formatData(data, selections.genres);
         this.createChart();
     }
