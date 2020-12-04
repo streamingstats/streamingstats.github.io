@@ -55,9 +55,9 @@ class Sunburst {
       name: selections.dataType,
       children: [
         {name:"Netflix", children:[]},
-        {name:"Amazon Prime", children:[]},
+        {name:"Prime Video", children:[]},
         {name:"Hulu", children:[]},
-        {name:"Disney", children:[]}
+        {name:"Disney+", children:[]}
       ]
     };
 
@@ -69,49 +69,44 @@ class Sunburst {
     this.createChart();
   }
 
-  formatData(data, options, category) {
-
+  formatData(data, options, selectedCategory) {
+    let countMap = {
+      "Netflix": {},
+      "Prime Video": {},
+      "Hulu": {},
+      "Disney+": {},
+    };
+    
     options.forEach(option => {
-      this.burst.children[0]['children'].push({name:option, size:0});
-      this.burst.children[1]['children'].push({name:option, size:0});
-      this.burst.children[2]['children'].push({name:option, size:0});
-      this.burst.children[3]['children'].push({name:option, size:0});
+      for (let child in countMap) {
+        countMap[child][option] = 0;
+      }
     });
 
-    for (let i = 0; i < data.length; i++)
-    {
-        let categories = data[i][category]
-        let categoryArray = categories.split(",");
-        let emptyIndex = categoryArray.indexOf("")
-        if (emptyIndex !== -1) {
-            categoryArray.splice(emptyIndex, 1);
+    for (let row of data) {
+      let categories = row[selectedCategory]
+      let categoryArray = categories.split(",");
+
+      let emptyIndex = categoryArray.indexOf("")
+      if (emptyIndex !== -1) {
+          categoryArray.splice(emptyIndex, 1);
+      }
+
+      for (let category of categoryArray) {
+        if (options.indexOf(category) === -1) {
+          continue;
         }
 
-        for (let j = 0; j < categoryArray.length; j++)
-        {
-            for (let k = 0; k < options.length; k++)
-            {
-                if (options[k] == categoryArray[j])
-                {
-                  if (data[i]['Netflix'] == "1")
-                  {
-                    this.burst.children[0]['children'][k]['size'] += 1;
-                  }
-                  if (data[i]['Disney+'] == "1")
-                  {
-                    this.burst.children[1]['children'][k]['size'] += 1;
-                  }
-                  if (data[i]['Hulu'] == "1")
-                  {
-                    this.burst.children[2]['children'][k]['size'] += 1;
-                  }
-                  if (data[i]['Prime Video'] == "1")
-                  {
-                    this.burst.children[3]['children'][k]['size'] += 1;
-                  }
-                }
-            }
+        for (let child in countMap) {
+          countMap[child][category] += +row[child];
         }
+      }
+    }
+
+    for (let child of this.burst.children) {
+      for (let category in countMap[child.name]) {
+        child['children'].push({name: category, size: countMap[child.name][category]});
+      }
     }
   }
 
@@ -186,6 +181,27 @@ class Sunburst {
 
     const t = g.transition().duration(750);
 
+    if (node === root) {
+      g.selectAll("image")
+        .attr("style", "z-index:1; opacity: 1")
+        .transition()
+        .duration(500)
+        .attr("style", "z-index:1; opacity: 0")
+        .remove();
+    } else {
+      // Up Arrow reference https://www.iconfinder.com/icons/186407/arrow_up_icon
+      g.append("image")
+        .attr("href", "./public/up_arrow.png")
+        .attr("width", this.radius)
+        .attr("x", -this.radius / 2) 
+        .attr("y", -(this.radius / 2) + 5 ) 
+        .attr("pointer-events", "none")
+        .attr("style", "z-index:1; opacity: 0")
+        .transition()
+        .duration(500)
+        .attr("style", "z-index:1; opacity: 1")
+      ;
+    }
     // Transition the data on all arcs, even the ones that aren’t visible,
     // so that if this transition is interrupted, entering arcs will start
     // the next transition from the desired position.
