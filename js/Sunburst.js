@@ -172,7 +172,7 @@ class Sunburst {
     ;
 
     path.append("title")
-      .text(d => d.parent === root ? d.data.name : `${d.parent.data.name} - ${d.data.name}`)
+      .text(d => d.parent === root ? d.data.name : d.value )
     ;
   }
 

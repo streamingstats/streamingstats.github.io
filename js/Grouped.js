@@ -4,11 +4,12 @@ class Grouped {
         this.groupedRT = [];
     }
 
-    render(data, count, genres) {
+    render(data, count, selections) {
         this.groupedIMDB = [];
         this.groupedRT = [];
 
-        this.formatData(data, genres);
+        console.log(genres);
+        this.formatData(data, selections.genres);
         this.createChart();
     }
 
@@ -112,7 +113,7 @@ class Grouped {
                     .attr("height", height + margin.top + margin.bottom)
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-console.log(this.groupedIMDB)
+        console.log(this.groupedIMDB)
         var categoriesNames = this.groupedIMDB.map(function(d) { return d.key; });
         var rateNames       = this.groupedIMDB[0]['values'].map(function(d) { return d.grpName; });
 
