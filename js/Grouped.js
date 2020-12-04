@@ -86,6 +86,8 @@ class Grouped {
             this.groupedRT[i]['values'][j]['grpValue'] = this.groupedRT[i]['values'][j]['sum'] / this.groupedRT[i]['values'][j]['count'];
           }
         }
+
+        
     }
 
     createChart(){
