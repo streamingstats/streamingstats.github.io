@@ -8,7 +8,8 @@ class Grouped {
         this.groupedIMDB = [];
         this.groupedRT = [];
 
-        this.formatData(data, genresg);
+        this.formatData(data, genres);
+        this.createChart();
     }
 
     formatData(data, genres){
@@ -98,7 +99,7 @@ class Grouped {
 
         var xAxis = d3.axisBottom().scale(x0)
                                    .tickFormat(d3.timeFormat("Week %V"))
-                                   .tickValues(groupData.map(d=>d.key));
+                                   .tickValues(this.groupedIMDB.map(d=>d.key));
 
         var yAxis = d3.axisLeft().scale(y);
 
@@ -109,13 +110,13 @@ class Grouped {
                     .attr("height", height + margin.top + margin.bottom)
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        var categoriesNames = groupData.map(function(d) { return d.key; });
-        var rateNames       = groupData[0].values.map(function(d) { return d.grpName; });
+console.log(this.groupedIMDB)
+        var categoriesNames = this.groupedIMDB.map(function(d) { return d.key; });
+        var rateNames       = this.groupedIMDB[0]['values'].map(function(d) { return d.grpName; });
 
         x0.domain(categoriesNames);
         x1.domain(rateNames).rangeRound([0, x0.bandwidth()]);
-        y.domain([0, d3.max(groupData, function(key) { return d3.max(key.values, function(d) { return d.grpValue; }); })]);
+        y.domain([0, d3.max(this.groupedIMDB, function(key) { return d3.max(key.values, function(d) { return d.grpValue; }); })]);
 
         svg.append("g")
            .attr("class", "x axis")
@@ -138,7 +139,7 @@ class Grouped {
         svg.select('.y').transition().duration(500).delay(1300).style('opacity','1');
 
         var slice = svg.selectAll(".slice")
-                       .data(groupData)
+                       .data(this.groupedIMDB)
                        .enter().append("g")
                        .attr("class", "g")
                        .attr("transform",function(d) { return "translate(" + x0(d.key) + ",0)"; });
@@ -168,7 +169,7 @@ class Grouped {
 
       //Legend
   var legend = svg.selectAll(".legend")
-      .data(groupData[0].values.map(function(d) { return d.grpName; }).reverse())
+      .data(this.groupedIMDB[0].values.map(function(d) { return d.grpName; }).reverse())
   .enter().append("g")
       .attr("class", "legend")
       .attr("transform", function(d,i) { return "translate(0," + i * 20 + ")"; })
