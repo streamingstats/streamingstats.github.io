@@ -92,7 +92,6 @@ class Sunburst {
           categoryArray.splice(emptyIndex, 1);
       }
 
-      // console.log(categoryArray);
       for (let category of categoryArray) {
         if (options.indexOf(category) === -1) {
           continue;
@@ -182,6 +181,27 @@ class Sunburst {
 
     const t = g.transition().duration(750);
 
+    if (node === root) {
+      g.selectAll("image")
+        .attr("style", "z-index:1; opacity: 1")
+        .transition()
+        .duration(500)
+        .attr("style", "z-index:1; opacity: 0")
+        .remove();
+    } else {
+      // Up Arrow reference https://www.iconfinder.com/icons/186407/arrow_up_icon
+      g.append("image")
+        .attr("href", "./public/up_arrow.png")
+        .attr("width", this.radius)
+        .attr("x", -this.radius / 2) 
+        .attr("y", -(this.radius / 2) + 5 ) 
+        .attr("pointer-events", "none")
+        .attr("style", "z-index:1; opacity: 0")
+        .transition()
+        .duration(500)
+        .attr("style", "z-index:1; opacity: 1")
+      ;
+    }
     // Transition the data on all arcs, even the ones that aren’t visible,
     // so that if this transition is interrupted, entering arcs will start
     // the next transition from the desired position.
