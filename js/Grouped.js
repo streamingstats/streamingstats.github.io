@@ -8,7 +8,7 @@ class Grouped {
         this.groupedIMDB = [];
         this.groupedRT = [];
 
-        this.formatData(data, genres);
+        this.formatData(data, genresg);
     }
 
     formatData(data, genres){
