@@ -6,7 +6,6 @@ class Main {
 
         this.charts = {
             "bar": {label: "Quantity", chart: new Bar()},
-            "scatterplot": {label: "Scatterplot",chart: new Scatterplot()},
             "stacked": {label: "IMDB Ratings", chart: new Grouped()},
             "sunburst": {label: "Category Breakdown", chart: new Sunburst()},
             "profiles": {label: "Profiles", chart: new Profiles()},
