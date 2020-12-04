@@ -19,7 +19,7 @@ class Home {
 
     getText() {
         let text = [{text: "Take Quiz", link: "quiz.html"}];
-        let answers = this.util.getLocalStorage("answers");
+        let answers = this.util.getLocalStorage("selections");
 
         if (answers !== null) {
             text = [

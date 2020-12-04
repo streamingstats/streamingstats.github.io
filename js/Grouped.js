@@ -11,7 +11,12 @@ class Grouped {
         this.groupedIMDB = [];
         this.groupedRT = [];
 
-        this.formatData(data, selections.genres, "Genres");
+        if (selections.dataType === "movies") {
+          this.formatData(data, selections.genres, "Genres");
+        } else {
+          this.formatData(data, selections.ageRange, "Age");
+        }
+
         this.createChart();
     }
 
@@ -22,7 +27,6 @@ class Grouped {
         "Hulu": {"RT": {}, "IMDB": {}},
         "Disney+": {"RT": {}, "IMDB": {}},
       };
-      
 
       options.forEach(option => {
         for (let child in countMap) {
@@ -35,6 +39,7 @@ class Grouped {
       for (let row of data) {
         let categories = row[selectedCategory]
         let categoryArray = categories.split(",");
+        console.log(categoryArray);
   
         let emptyIndex = categoryArray.indexOf("")
         if (emptyIndex !== -1) {
