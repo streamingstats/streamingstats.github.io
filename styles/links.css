@@ -3,20 +3,24 @@ section,
 main,
 nav,
 h1,
-h2,
-h3,
-p {
+h2
+{
   margin: 0px;
   padding: 0px;
   color: #FFFFFF;
 }
-
+p
+{
+  text-align: center;
+  color: #000000;
+}
 h1 {
   margin: .20em 0 0 .5em;
 }
 
 h3 {
   text-align: center;
+  color: #000000;
 }
 
 body {
@@ -36,4 +40,8 @@ header > h1 {
 .contents {
   justify-content: space-between;
   height: 92vh;
+}
+
+.center{
+    text-align: center; 
 }
