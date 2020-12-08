@@ -77,10 +77,9 @@ main {
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0;
-  background-color: #AAAAAA;
 }
 
-.amazon {
+.amazon, .primevideo {
   background-color: #0052cc;
 }
 

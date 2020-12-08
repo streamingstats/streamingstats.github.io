@@ -21,6 +21,7 @@ class Info {
 
         listDiv.append("h3")
             .text(service)
+            .classed(`${parsedService}`, true)
         
         data.movies.forEach(title => {
             listDiv.append("p")
