@@ -45,3 +45,15 @@ header > h1 {
 .center{
     text-align: center; 
 }
+
+.info {
+  justify-content: center;
+}
+
+section {
+  margin-top: 40px;
+}
+
+.item {
+  margin: 10px;
+}

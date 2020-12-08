@@ -25,3 +25,8 @@ p {
 .selected {
   background-color: #003380;
 }
+
+strong > a {
+  text-decoration: none;
+  color: white;
+}

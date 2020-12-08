@@ -135,8 +135,3 @@ main {
 .tooltip{
   fill:lightgray
 }
-
-strong > a {
-  text-decoration: none;
-  color: white;
-}
