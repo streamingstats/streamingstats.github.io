@@ -10,14 +10,12 @@ class Grouped {
         this.groupedRT = [];
 
         this.formatData(data, selections.genres);
-        console.log(this.groupedIMDB)
         this.createChart();
     }
 
     formatData(data, genres){
         for (let i = 0; i < genres.length; i++)
         {
-            console.log(i)
           this.groupedIMDB.push({key:genres[i], values:[{grpName:"Netflix", grpValue:0, sum:0, count:0},{grpName:"Amazon Prime", grpValue:0, sum:0, count:0},{grpName:"Hulu", grpValue:0, sum:0, count:0},{grpName:"Disney", grpValue:0, sum:0, count:0}]})
           this.groupedRT.push({key:genres[i], values:[{grpName:"Netflix", grpValue:0, sum:0, count:0},{grpName:"Amazon Prime", grpValue:0, sum:0, count:0},{grpName:"Hulu", grpValue:0, sum:0, count:0},{grpName:"Disney", grpValue:0, sum:0, count:0}]})
         }
@@ -51,7 +49,6 @@ class Grouped {
                         this.groupedRT[k]['values'][0]['count'] += 1;
                         this.groupedRT[k]['values'][0]['sum'] += +data[i]['Rotten Tomatoes'];
                       }
-                      else console.log("netflix null")
                     }
                     if (data[i]['Disney+'] == "1")
                     {
@@ -71,7 +68,6 @@ class Grouped {
                     {
                       if (data[i]['IMDb'] != "")
                       {
-                        console.log("hulu", data[i])
                         this.groupedIMDB[k]['values'][2]['count'] += 1;
                         this.groupedIMDB[k]['values'][2]['sum'] += +data[i]['IMDb'];
                       }
@@ -86,13 +82,13 @@ class Grouped {
                     {
                       if (data[i]['IMDb'] != "")
                       {
-                        console.log("here")
                         this.groupedIMDB[k]['values'][3]['count'] += 1;
                         this.groupedIMDB[k]['values'][3]['sum'] += +data[i]['IMDb'];
                       }
 
                       if (data[i]['Rotten Tomatoes'] != "")
                       {
+                        console.log(data[i])
                         this.groupedRT[k]['values'][3]['count'] += 1;
                         this.groupedRT[k]['values'][3]['sum'] += +data[i]['Rotten Tomatoes'];
                       }
@@ -115,12 +111,13 @@ class Grouped {
         for (let i = 0; i < this.groupedRT.length; i++)
         {
           for ( let j = 0; j < this.groupedRT[i]['values'].length; j++){
-            if (this.groupedRT[i]['values'][j]['count']){
+            if (this.groupedRT[i]['values'][j]['count'] != 0){
             this.groupedRT[i]['values'][j]['grpValue'] = this.groupedRT[i]['values'][j]['sum'] / this.groupedRT[i]['values'][j]['count'];
             }
           }
         }
 
+        console.log("RT", this.groupedRT)
         
     }
 
@@ -145,7 +142,7 @@ class Grouped {
                     .attr("height", height + margin.top + margin.bottom)
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        console.log(this.groupedIMDB)
+
         let categoriesNames = this.groupedIMDB.map(function(d) { return d.key; });
         let rateNames       = this.groupedIMDB[0].values.map(function(d) { return d.grpName; });
 
@@ -212,7 +209,6 @@ class Grouped {
                   .append("g")
                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      console.log(this.groupedIMDB)
       categoriesNames = this.groupedRT.map(function(d) { return d.key; });
       rateNames       = this.groupedRT[0].values.map(function(d) { return d.grpName; });
 
