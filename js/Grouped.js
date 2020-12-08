@@ -260,7 +260,11 @@ class Grouped {
        .text("Rotten Tomatoes Ratings")
        .attr("transform", "translate("+ 150 + "," + (this.h - (this.padding / 3)) + ")")
   }
-  
+  svg = d3.select("#chart")
+              .append("svg")
+              .attr("width", width / 2)
+              .attr("height", height / 2);
+              
   let legend = svg.selectAll(".legend")
   .data(color.range())
   .enter().append("g")
