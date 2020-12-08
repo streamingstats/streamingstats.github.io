@@ -103,7 +103,7 @@ class Profiles {
                       .domain([0, d3.max(this.data, function(d) { return +d.screen_count; })])
                       .range([this.h - this.padding, this.padding]);
 
-       let yAxis = d3.axisLeft().scale(yScale).tickFormat("");
+       let yAxis = d3.axisLeft().scale(yScale);
       
       svg.selectAll("circle")
          .data(this.data)
@@ -142,15 +142,14 @@ class Profiles {
     
         svg.append("text")
         .text("Screen Count in Comparison to Price")
-        .attr("transform", "translate("+ 150 + "," + (this.h - (this.padding / 3)) + ")")
+        .attr("transform", "translate("+ 150 + "," + 0 + ")")
         
-
-        svg = d3.select("#chart")
-         .append("svg")
-         .attr("width", this.w / 2)
-         .attr("height", this.h / 2);
       }
 
+      svg = d3.select("#chart")
+              .append("svg")
+              .attr("width", this.w / 2)
+              .attr("height", this.h / 2);
       let subgroups = ["Netflix", "Prime", "Hulu" , "Disney"];
       let color = d3.scaleOrdinal()
              .domain(subgroups)
