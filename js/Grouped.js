@@ -119,10 +119,6 @@ class Grouped {
                     .attr("height", height + margin.top + margin.bottom)
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-<<<<<<< HEAD
-
-=======
->>>>>>> 9b3b7a4b39a16f757dec6b07c5bccf0b93820b34
         let categoriesNames = this.groupedIMDB.map(function(d) { return d.key; });
         let rateNames       = this.groupedIMDB[0].values.map(function(d) { return d.grpName; });
 
