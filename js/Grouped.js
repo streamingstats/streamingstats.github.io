@@ -211,7 +211,7 @@ class Grouped {
 
           svg.append("text")
             .text("IMDB Ratings")
-            .attr("transform", `translate(150,${this.h - (this.padding.left / 3)})`)
+            .attr("transform", `translate(150,${this.h - (this.padding.left / 3) + 5})`)
           ;
       } else {
         let categoriesNames = this.groupedRT.map(function(d) { return d.key; });
@@ -271,7 +271,7 @@ class Grouped {
 
         svg.append("text")
           .text("Rotten Tomatoes Ratings")
-          .attr("transform", `translate(150,${this.h - (this.padding.left / 3)})`)
+          .attr("transform", `translate(150,${this.h - (this.padding.left / 3) + 5})`)
       }
   
       let legend = svg.selectAll(".legend")
