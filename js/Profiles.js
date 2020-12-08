@@ -7,7 +7,7 @@ class Profiles {
 		this.h = 400;
         this.padding = 40;
         
-        this.button = [ {name:"Profile Count"}, {name:"Screen Count"}];
+        this.buttons = [ {name:"Profile Count"}, {name:"Screen Count"}];
 
         d3.csv(`data/profile_cost.csv`, d => {
          this.data.push({"service":d.service,"price":+d.price, "profile_count":+d.profile_count, "screen_count":+d.screen_count})
@@ -15,29 +15,33 @@ class Profiles {
     }
 
     render(data, count) {
-        console.log(this.data);
-        
-        d3.select('#chart')
-          .selectAll('button')
-          .data(this.button)
-          .enter()
-          .append("button")
-          .text(function(d) {return d.name}).attr('value', function(d) {return d.name})
-          .on('click', d => this.createChart(d.name))
-        ;
-        
+      this.createChart("Profile Count")
+    }
+
+    clearData() {
+      d3.select("#chart").selectAll("*").remove();
+    }
+
+    createButtons(selected) {
+      let buttonDiv = d3.select('#chart')
+      .append("div")
+      .attr("id", "ratingsButtons")  
+    ;
+
+      buttonDiv
+        .selectAll('button')
+        .data(this.buttons)
+        .enter()
+        .append("button")
+        .classed("selected", d => d.name === selected)
+        .text(function(d) {return d.name}).attr('value', function(d) {return d.name})
+        .on('click', d => this.createChart(d.name))
+      ;
     }
 
     createChart(select){
-        d3.select('#chart').selectAll('*').remove();
-
-        d3.select('#chart')
-          .selectAll('button')
-          .data(this.button)
-          .enter()
-          .append("button")
-          .text(function(d) {return d.name}).attr('value', function(d) {return d.name})
-          .on('click', d => this.createChart(d.name))
+        this.clearData();
+        this.createButtons(select);
 
         let svg = d3.select("#chart")
                     .append("svg")
