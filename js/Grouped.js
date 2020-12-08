@@ -124,7 +124,7 @@ class Grouped {
 
         x0.domain(categoriesNames);
         x1.domain(rateNames).rangeRound([0, x0.bandwidth()]);
-        y.domain([0, d3.max(this.groupedIMDB, function(key) { return d3.max(key.values, function(d) { return d.grpValue; }); })]);
+        y.domain([0, 10]);
 
         svg.append("g")
            .attr("class", "x axis")
@@ -190,7 +190,7 @@ class Grouped {
 
     x0.domain(categoriesNames);
     x1.domain(rateNames).rangeRound([0, x0.bandwidth()]);
-    y.domain([0, d3.max(this.groupedRT, function(key) { return d3.max(key.values, function(d) { return d.grpValue; }); })]);
+    y.domain([0, 100]);
 
     svg.append("g")
        .attr("class", "x axis")
