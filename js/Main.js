@@ -44,9 +44,6 @@ class Main {
         this.util.setLocalStorage("selections", this.selections);
     }
 
-    // Add in ability for user to select movies that are of interest to them.
-    // Filter results of data to each service.
-
     setDataType(dataType) {
         this.selections.dataType = dataType;
         this.fetchData();
@@ -68,18 +65,21 @@ class Main {
         } else if (!add && index !== -1) {
             this.selections.languages.splice(index, 1);
         }
+        this.renderChart();
         console.log(this.selections);
     }
 
     setYearMin(yearMin) {
         if (yearMin >= this.util.getSupportedYearMin(this.dataType) && yearMin <= this.util.getSupportedYearMax()) {
             this.selections.years.min = yearMin;
+            this.renderChart();
         }
     }
 
     setYearMax(yearMax) {
         if (yearMax >= this.util.getSupportedYearMin(this.dataType) && yearMax <= this.util.getSupportedYearMax()) {
             this.selections.years.max = yearMax;
+            this.renderChart();
         }
     }
 
@@ -90,6 +90,7 @@ class Main {
         } else if (!add && index !== -1) {
             this.selections.ageRange.splice(index, 1);
         }
+        this.renderChart();
     }
 
     updateGenres(genre, add) {
@@ -99,17 +100,20 @@ class Main {
         } else if (!add && index !== -1) {
             this.selections.genres.splice(index, 1);
         }
+        this.renderChart();
     }
 
     setRatingMin(ratingMin) {
         if (ratingMin >= 0 && ratingMin <= 100) {
             this.selections.ratings.min = ratingMin;
+            this.renderChart();
         }
     }
 
     setRatingMax(ratingMax) {
         if (ratingMax >= 0 && ratingMax <= 100) {
             this.selections.ratings.max = ratingMax;
+            this.renderChart();
         }
     }
 
