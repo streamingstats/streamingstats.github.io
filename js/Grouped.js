@@ -183,7 +183,7 @@ class Grouped {
           .data(this.groupedIMDB)
           .enter().append("g")
           .attr("class", "g")
-          .attr("transform", d  => { return `translate(${x0(d.key)},-${(this.padding.top * 2) + this.margin})`; });
+          .attr("transform", d  => { return `translate(${x0(d.key)},0)`; });
                 
         slice.selectAll("rect")
             .data(function(d) { return d.values; })
@@ -191,8 +191,8 @@ class Grouped {
             .attr("width", x1.bandwidth())
             .attr("x", function(d) { return x1(d.grpName); })
             .style("fill", function(d) { return color(d.grpName) })
-            .attr("y", d => this.height)
-            .attr("height", (d) =>  (this.height - (this.padding.top * 2) - this.margin) - y(0))
+            .attr("y", d => this.height - (this.padding.top * 2) - this.margin)
+            .attr("height", (d) =>  0)
             .on("mouseover", function(d) {
                 d3.select(this).style("fill", d3.rgb(color(d.grpName)).darker(2));
             })
@@ -205,12 +205,9 @@ class Grouped {
           .transition()
           .delay(function (d) {return Math.random()*1000;})
           .duration(1000)
-          .attr("y", d => {
-            console.log("grpValue", d.grpValue);
-            console.log("y value", y(d.grpValue));
-            return y(d.grpValue);
-          })
-          .attr("height", d => this.height - y(d.grpValue));
+          .attr("y", d => { return y(d.grpValue);})
+          .attr("height", d => this.height - (this.padding.top * 2) - this.margin - y(d.grpValue))
+        ;
 
           svg.append("text")
             .text("IMDB Ratings")
@@ -247,8 +244,7 @@ class Grouped {
           .data(this.groupedRT)
           .enter().append("g")
           .attr("class", "g")
-          .attr("transform", d  => { return `translate(${x0(d.key)},-${(this.padding.top * 2) + this.margin})`; });
-
+          .attr("transform", d  => { return `translate(${x0(d.key)},0)`; });
 
         slice.selectAll("rect")
             .data(function(d) { return d.values; })
@@ -256,8 +252,8 @@ class Grouped {
             .attr("width", x1.bandwidth())
             .attr("x", function(d) { return x1(d.grpName); })
             .style("fill", function(d) { return color(d.grpName) })
-            .attr("y", d => this.height)
-            .attr("height", (d) =>  (this.height - (this.padding.top * 2) - this.margin) - y(0))
+            .attr("y", d => this.height - (this.padding.top * 2) - this.margin)
+            .attr("height", (d) =>  0)
             .on("mouseover", function(d) {
                 d3.select(this).style("fill", d3.rgb(color(d.grpName)).darker(2));
               })
@@ -269,8 +265,9 @@ class Grouped {
             .transition()
             .delay(function (d) {return Math.random()*1000;})
             .duration(1000)
-            .attr("y", (d) => y(d.grpValue))
-            .attr("height", d => this.height - y(d.grpValue));
+            .attr("y", d => { return y(d.grpValue);})
+            .attr("height", d => this.height - (this.padding.top * 2) - this.margin - y(d.grpValue))
+        ;  
 
         svg.append("text")
           .text("Rotten Tomatoes Ratings")
