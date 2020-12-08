@@ -165,7 +165,7 @@ class Grouped {
                        .data(this.groupedIMDB)
                        .enter().append("g")
                        .attr("class", "g")
-                       .attr("transform",function(d) { return "translate(" + x0(d.key) - 100 + ",0)"; });
+                       .attr("transform",function(d) { return "translate(" + x0(d.key) + ",0)"; });
 
       slice.selectAll("rect")
            .data(function(d) { return d.values; })
