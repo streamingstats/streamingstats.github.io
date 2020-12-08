@@ -80,19 +80,19 @@ main {
 }
 
 .amazon, .primevideo {
-  background-color: #0052cc;
+  background-color: #008040;
 }
 
 .hulu {
-  background-color: #003d99;
+  background-color: #808000;
 }
 
 .netflix {
-  background-color: #3385ff;
+  background-color: #003380;
 }
 
 .disney {
-  background-color: #66a3ff;
+  background-color: #800000;
 }
 
 #chart {
