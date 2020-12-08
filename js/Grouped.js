@@ -2,7 +2,8 @@ class Grouped {
     constructor() {
         this.groupedIMDB = [];
         this.groupedRT = [];
-        this.opt = [ {name:"IMDB"}, {name:"RT"}]
+        this.opt = [ {name:"IMDB"}, {name:"RT"}];
+        this.options = [ {name:"IMDB"}, {name:"Rotten Tomatoes"}];
         this.h = 0;
         this.padding = 0;
     }
@@ -17,7 +18,8 @@ class Grouped {
           this.formatData(data, selections.ageRange, "Age");
         }
 
-        this.createChart();
+        //this.createChart();
+        let buttons = d3.select('#chart').selectAll('button').data(this.options).enter().append("button").text(function(d) {return d.name}).attr('value', function(d) {return d.name}).on('click', event => this.createChart(function(d){return this}));
     }
 
     formatData(data, options, selectedCategory) {
@@ -71,7 +73,6 @@ class Grouped {
         }
       }
 
-
       options.forEach(option => {
         let rtData = {key: option, values: []};
         let imdbData = {key: option, values: []};
@@ -98,27 +99,36 @@ class Grouped {
       });
     }
 
-    createChart(){
-        let margin = {top: 20, right: 20, bottom: 30, left: 40},
-            width = 800 - margin.left - margin.right,
-            height = 400 - margin.top - margin.bottom;
+    createChart(select){
+      d3.select('#chart').selectAll('svg').remove();
 
-        let x0  = d3.scaleBand().rangeRound([0, width], .5);
-        let x1  = d3.scaleBand();
-        let y   = d3.scaleLinear().rangeRound([height, 0]);
+      let margin = {top: 20, right: 20, bottom: 30, left: 40},
+      width = 800 - margin.left - margin.right,
+      height = 400 - margin.top - margin.bottom;
 
-        let xAxis = d3.axisBottom().scale(x0)
+      let x0  = d3.scaleBand().rangeRound([0, width], .5);
+      let x1  = d3.scaleBand();
+      let y   = d3.scaleLinear().rangeRound([height, 0]);
+
+      let xAxis = d3.axisBottom().scale(x0)
                                    .tickValues(this.groupedIMDB.map(d=>d.key));
 
-        let yAxis = d3.axisLeft().scale(y);
+      let yAxis = d3.axisLeft().scale(y);
 
-        const color = d3.scaleOrdinal(d3.schemeCategory10);
+      let subgroups = ["Netflix", "Prime Video", "Hulu" , "Disney+"];
 
-        let svg = d3.select('#chart').append("svg")
-                    .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom)
-                    .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      let color = d3.scaleOrdinal()
+                .domain(subgroups)
+                .range(['#003380','#008040','#808000', '#800000'])
+
+      let svg = d3.select('#chart').append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      console.log(select)
+      if (select === "IMDB")
+      {
         let categoriesNames = this.groupedIMDB.map(function(d) { return d.key; });
         let rateNames       = this.groupedIMDB[0].values.map(function(d) { return d.grpName; });
 
@@ -130,7 +140,6 @@ class Grouped {
            .attr("class", "x axis")
            .attr("transform", "translate(0," + height + ")")
            .call(xAxis);
-
 
         svg.append("g")
            .attr("class", "y axis")
@@ -178,15 +187,10 @@ class Grouped {
       svg.append("text")
          .text("IMDB Ratings")
          .attr("transform", "translate("+ 150 + "," + (this.h - (this.padding / 3)) + ")")
-
-      svg = d3.select('#chart').append("svg")
-                  .attr("width", width + margin.left + margin.right)
-                  .attr("height", height + margin.top + margin.bottom)
-                  .append("g")
-                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-      categoriesNames = this.groupedRT.map(function(d) { return d.key; });
-      rateNames       = this.groupedRT[0].values.map(function(d) { return d.grpName; });
+  }
+  else{
+      let categoriesNames = this.groupedRT.map(function(d) { return d.key; });
+      let rateNames       = this.groupedRT[0].values.map(function(d) { return d.grpName; });
 
     x0.domain(categoriesNames);
     x1.domain(rateNames).rangeRound([0, x0.bandwidth()]);
@@ -211,7 +215,7 @@ class Grouped {
 
     svg.select('.y').transition().duration(500).delay(1300).style('opacity','1');
 
-    slice = svg.selectAll(".slice")
+    let slice = svg.selectAll(".slice")
                .data(this.groupedRT)
                .enter().append("g")
                .attr("class", "g")
@@ -242,28 +246,33 @@ class Grouped {
     svg.append("text")
        .text("Rotten Tomatoes Ratings")
        .attr("transform", "translate("+ 150 + "," + (this.h - (this.padding / 3)) + ")")
-
-      //Legend
+  }
+  
   let legend = svg.selectAll(".legend")
-      .data(this.groupedRT[0].values.map(function(d) { return d.grpName; }).reverse())
+  .data(color.range())
   .enter().append("g")
-      .attr("class", "legend")
-      .attr("transform", function(d,i) { return "translate(0," + i * 20 + ")"; })
-      .style("opacity","0");
+  .attr("class", "legend")
+  .attr("transform", function(d, i) { return "translate(-225," + i * 19 + ")"; });
 
   legend.append("rect")
-      .attr("x", width - 18)
-      .attr("width", 18)
-      .attr("height", 18)
-      .style("fill", function(d) { return color(d); });
-
+        .attr("x", width)
+        .attr("width", 18)
+        .attr("height", 18)
+        .style("fill", function(d, i) {
+          return color.range()[i]});
+  
   legend.append("text")
-      .attr("x", width - 24)
-      .attr("y", 9)
-      .attr("dy", ".35em")
-      .style("text-anchor", "end")
-      .text(function(d) {return d; });
-
-  legend.transition().duration(500).delay(function(d,i){ return 1300 + 100 * i; }).style("opacity","1");
-    }
+        .attr("x", width + 25)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .style("text-anchor", "start")
+        .text(function(d, i) { 
+          switch (i) {
+            case 0: return "Netflix";
+            case 1: return "Amazon Prime";
+            case 2: return "Hulu";
+            case 3: return "Disney+";
+          }
+});
+}
 }
