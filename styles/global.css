@@ -15,4 +15,13 @@ p {
 .row {
     display: flex;
     flex-direction: row;
-  }
+}
+
+.navElement{
+  cursor: pointer;
+  padding: 1em;
+}
+  
+.selected {
+  background-color: #003380;
+}
