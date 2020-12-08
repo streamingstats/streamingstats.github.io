@@ -8,7 +8,6 @@ class Bar {
     }
 
     render(data, count) {
-
         let countArray = [];
         for (let service in count) {
             countArray.push({"service": service, "count": count[service].count});

@@ -125,7 +125,6 @@ class Main {
     renderChart() {
         this.setSelections();
         this.clearChart();
-        this.showLoading();
         let selectedData = [];
         let services = {
             "Netflix": {count: 0, movies: []},
@@ -199,16 +198,8 @@ class Main {
             selectedData.push(row);
         }
 
-        this.clearChart();
         this.charts[this.selections.chartType].chart.render(selectedData, services, this.selections);
         this.infoChart.render(selectedData, services, this.selections.genres);
-    }
-
-    showLoading() {
-        console.log("loading");
-        d3.select("#chart")
-            .append("text")
-            .text("Loading");
     }
 
     clearChart() {
