@@ -19,7 +19,14 @@ class Grouped {
         }
 
         //this.createChart();
-        let buttons = d3.select('#chart').selectAll('button').data(this.options).enter().append("button").text(function(d) {return d.name}).attr('value', function(d) {return d.name}).on('click', event => this.createChart(function(d){return this}));
+        d3.select('#chart')
+          .selectAll('button')
+          .data(this.options)
+          .enter()
+          .append("button")
+          .text(function(d) {return d.name}).attr('value', function(d) {return d.name})
+          .on('click', d => this.createChart(d.name))
+        ;
     }
 
     formatData(data, options, selectedCategory) {
@@ -126,7 +133,6 @@ class Grouped {
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-      console.log(select)
       if (select === "IMDB")
       {
         let categoriesNames = this.groupedIMDB.map(function(d) { return d.key; });
