@@ -150,6 +150,7 @@ class Profiles {
               .append("svg")
               .attr("width", this.w / 2)
               .attr("height", this.h / 2);
+
       let subgroups = ["Netflix", "Prime", "Hulu" , "Disney"];
       let color = d3.scaleOrdinal()
              .domain(subgroups)
