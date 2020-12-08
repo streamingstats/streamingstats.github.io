@@ -103,7 +103,7 @@ class Grouped {
       d3.select('#chart').selectAll('svg').remove();
 
       let margin = {top: 20, right: 20, bottom: 30, left: 40},
-      width = 800 - margin.left - margin.right,
+      width = 1000 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
       let x0  = d3.scaleBand().rangeRound([0, width], .5);
@@ -159,7 +159,7 @@ class Grouped {
                        .data(this.groupedIMDB)
                        .enter().append("g")
                        .attr("class", "g")
-                       .attr("transform",function(d) { return "translate(" + x0(d.key) + ",0)"; });
+                       .attr("transform",function(d) { return "translate(" + x0(d.key) - 100 + ",0)"; });
 
       slice.selectAll("rect")
            .data(function(d) { return d.values; })
@@ -255,7 +255,7 @@ class Grouped {
   .attr("transform", function(d, i) { return "translate(-225," + i * 19 + ")"; });
 
   legend.append("rect")
-        .attr("x", width)
+        .attr("x", 900)
         .attr("width", 18)
         .attr("height", 18)
         .style("fill", function(d, i) {
