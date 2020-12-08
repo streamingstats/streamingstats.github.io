@@ -18,7 +18,6 @@ class Grouped {
           this.formatData(data, selections.ageRange, "Age");
         }
 
-        //this.createChart();
         d3.select('#chart')
           .selectAll('button')
           .data(this.options)
@@ -107,7 +106,15 @@ class Grouped {
     }
 
     createChart(select){
-      d3.select('#chart').selectAll('svg').remove();
+      d3.select('#chart').selectAll('*').remove();
+
+      d3.select('#chart')
+          .selectAll('button')
+          .data(this.options)
+          .enter()
+          .append("button")
+          .text(function(d) {return d.name}).attr('value', function(d) {return d.name})
+          .on('click', d => this.createChart(d.name))
 
       let margin = {top: 20, right: 20, bottom: 30, left: 40},
       width = 1000 - margin.left - margin.right,
@@ -118,7 +125,7 @@ class Grouped {
       let y   = d3.scaleLinear().rangeRound([height, 0]);
 
       let xAxis = d3.axisBottom().scale(x0)
-                                   .tickValues(this.groupedIMDB.map(d=>d.key));
+                                   .tickValues("");
 
       let yAxis = d3.axisLeft().scale(y);
 
@@ -165,7 +172,7 @@ class Grouped {
                        .data(this.groupedIMDB)
                        .enter().append("g")
                        .attr("class", "g")
-                       .attr("transform",function(d) { return "translate(" + x0(d.key) - 100 + ",0)"; });
+                       .attr("transform",function(d) { return "translate(" + x0(d.key)+ ",0)"; });
 
       slice.selectAll("rect")
            .data(function(d) { return d.values; })
