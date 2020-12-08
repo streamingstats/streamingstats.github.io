@@ -217,8 +217,6 @@ class Main {
         }
         let dataTypeDiv = d3.select("#dataTypes");
         dataTypeDiv.selectAll("*").remove();
-
-
         
         for (let dataType in dataTypes) {
             let div = dataTypeDiv.append("div");
@@ -240,17 +238,17 @@ class Main {
     }
 
     renderChartTypes() {
-        let select = d3.select("#chartTypes")
-            .append("select")
-            .attr("onchange", "setChartType(this.value)")
+        let chartTypesDiv = d3.select("#chartTypes")
+            // .append("select")
+            // .attr("onchange", "setChartType(this.value)")
         ;
 
         for (let chart in this.charts) {
-            select.append("option")
-                .attr("value", chart)
-                .attr("selected", this.selections.chartType === chart ? true : null)
+            chartTypesDiv.append("p")
+                .classed("navElement", true)
+                .classed("selected", this.selections.chartType === chart)
                 .text(this.charts[chart].label)
-                .attr("onchange", "setChartType(this.value)")
+                .attr("onclick", `setChartType('${chart}')`)
             ;
         }
     }
@@ -402,6 +400,7 @@ function setDataType(dataType) {
 }
 
 function setChartType(chartType) {
+    console.log(chartType);
     main.setChartType(chartType);
 }
 

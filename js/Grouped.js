@@ -39,7 +39,6 @@ class Grouped {
       for (let row of data) {
         let categories = row[selectedCategory]
         let categoryArray = categories.split(",");
-        console.log(categoryArray);
   
         let emptyIndex = categoryArray.indexOf("")
         if (emptyIndex !== -1) {
