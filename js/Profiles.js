@@ -95,7 +95,7 @@ class Profiles {
 
         svg.append("text")
            .text("Profile Count in Comparison to Price")
-           .attr("transform", "translate("+ 150 + "," + (this.h - (this.padding / 3)) + ")")
+           .attr("transform", "translate("+ 150 + "," + (this.h - (this.padding / 3) + 5) + ")")
     }
     else{
 
@@ -142,7 +142,7 @@ class Profiles {
     
         svg.append("text")
         .text("Screen Count in Comparison to Price")
-        .attr("transform", "translate("+ 150 + "," + 0 + ")")
+        .attr("transform", "translate("+ 150 + "," + (this.h - (this.padding / 3) + 5) + ")")
         
       }
 
