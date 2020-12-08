@@ -125,7 +125,7 @@ class Grouped {
       let y   = d3.scaleLinear().rangeRound([height, 0]);
 
       let xAxis = d3.axisBottom().scale(x0)
-                                   .tickValues("");
+                                   .tickValues([]);
 
       let yAxis = d3.axisLeft().scale(y);
 
