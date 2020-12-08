@@ -3,122 +3,99 @@ class Grouped {
         this.groupedIMDB = [];
         this.groupedRT = [];
         this.opt = [ {name:"IMDB"}, {name:"RT"}]
+        this.h = 0;
+        this.padding = 0;
     }
 
     render(data, count, selections) {
         this.groupedIMDB = [];
         this.groupedRT = [];
 
-        this.formatData(data, selections.genres);
+        if (selections.dataType === "movies") {
+          this.formatData(data, selections.genres, "Genres");
+        } else {
+          this.formatData(data, selections.ageRange, "Age");
+        }
+
         this.createChart();
     }
 
-    formatData(data, genres){
-        for (let i = 0; i < genres.length; i++)
-        {
-          this.groupedIMDB.push({key:genres[i], values:[{grpName:"Netflix", grpValue:0, sum:0, count:0},{grpName:"Amazon Prime", grpValue:0, sum:0, count:0},{grpName:"Hulu", grpValue:0, sum:0, count:0},{grpName:"Disney", grpValue:0, sum:0, count:0}]})
-          this.groupedRT.push({key:genres[i], values:[{grpName:"Netflix", grpValue:0, sum:0, count:0},{grpName:"Amazon Prime", grpValue:0, sum:0, count:0},{grpName:"Hulu", grpValue:0, sum:0, count:0},{grpName:"Disney", grpValue:0, sum:0, count:0}]})
-        }
+    formatData(data, options, selectedCategory) {
+      let countMap = {
+        "Netflix": {"RT": {}, "IMDB": {}},
+        "Prime Video": {"RT": {}, "IMDB": {}},
+        "Hulu": {"RT": {}, "IMDB": {}},
+        "Disney+": {"RT": {}, "IMDB": {}},
+      };
 
-        // Calculate averages
-        for (let i = 0; i < data.length; i++)
-        {
-          let category = data[i]['Genres']
-          let genreArray = category.split(",");
-          let emptyIndex = genreArray.indexOf("")
-          if (emptyIndex !== -1) {
-              genreArray.splice(emptyIndex, 1);
+      options.forEach(option => {
+        for (let child in countMap) {
+          countMap[child]["RT"][option] = {grpValue:0, sum:0, count:0};
+          countMap[child]["IMDB"][option] = {grpValue:0, sum:0, count:0};
+        }
+      });
+    
+      // Calculate averages
+      for (let row of data) {
+        let categories = row[selectedCategory]
+        let categoryArray = categories.split(",");
+  
+        let emptyIndex = categoryArray.indexOf("")
+        if (emptyIndex !== -1) {
+            categoryArray.splice(emptyIndex, 1);
+        }
+  
+        for (let category of categoryArray) {
+          if (options.indexOf(category) === -1) {
+            continue;
           }
 
-          for (let j = 0; j < genreArray.length; j++)
-          {
-              for (let k = 0; k < genres.length; k++)
-              {
-                  if (genres[k] == genreArray[j])
-                  {
-                    if (data[i]['Netflix'] == "1")
-                    {
-                      if (data[i]['IMDb'] != "")
-                      {
-                        this.groupedIMDB[k]['values'][0]['count'] += 1;
-                        this.groupedIMDB[k]['values'][0]['sum'] += +data[i]['IMDb'];
-                      }
-                      
-                      if (data[i]['Rotten Tomatoes'] != "")
-                      {
-                        this.groupedRT[k]['values'][0]['count'] += 1;
-                        this.groupedRT[k]['values'][0]['sum'] += +data[i]['Rotten Tomatoes'];
-                      }
-                    }
-                    if (data[i]['Disney+'] == "1")
-                    {
-                      if (data[i]['IMDb'] != "")
-                      {
-                        this.groupedIMDB[k]['values'][1]['count'] += 1;
-                        this.groupedIMDB[k]['values'][1]['sum'] += +data[i]['IMDb'];
-                      }
+          for (let child in countMap) {
+            let movieAdded = +row[child] === 1;
 
-                      if (data[i]['Rotten Tomatoes' != ""])
-                      {
-                        this.groupedRT[k]['values'][1]['count'] += 1;
-                        this.groupedRT[k]['values'][1]['sum'] += +data[i]['Rotten Tomatoes'];
-                      }
-                    }
-                    if (data[i]['Hulu'] == "1")
-                    {
-                      if (data[i]['IMDb'] != "")
-                      {
-                        this.groupedIMDB[k]['values'][2]['count'] += 1;
-                        this.groupedIMDB[k]['values'][2]['sum'] += +data[i]['IMDb'];
-                      }
+            if (movieAdded) {
 
-                      if (data[i]['Rotten Tomatoes'] != "")
-                      {
-                        this.groupedRT[k]['values'][2]['count'] += 1;
-                        this.groupedRT[k]['values'][2]['sum'] += +data[i]['Rotten Tomatoes'];
-                      }
-                    }
-                    if (data[i]['Prime Video'] == "1")
-                    {
-                      if (data[i]['IMDb'] != "")
-                      {
-                        this.groupedIMDB[k]['values'][3]['count'] += 1;
-                        this.groupedIMDB[k]['values'][3]['sum'] += +data[i]['IMDb'];
-                      }
-
-                      if (data[i]['Rotten Tomatoes'] != "")
-                      {
-                        console.log(data[i])
-                        this.groupedRT[k]['values'][3]['count'] += 1;
-                        this.groupedRT[k]['values'][3]['sum'] += +data[i]['Rotten Tomatoes'];
-                      }
-                    }
-                  }
+              let rtScore = row["Rotten Tomatoes"];
+              if (rtScore !== "") {
+                countMap[child]["RT"][category].count++;
+                countMap[child]["RT"][category].sum += +rtScore;
               }
-          }
-        }
-
-        for (let i = 0; i < this.groupedIMDB.length; i++)
-        {
-          for ( let j = 0; j < this.groupedIMDB[i]['values'].length; j++){
-            if ( this.groupedIMDB[i]['values'][j]['count'] != 0)
-            {
-              this.groupedIMDB[i]['values'][j]['grpValue'] = this.groupedIMDB[i]['values'][j]['sum'] / this.groupedIMDB[i]['values'][j]['count'];
-            } 
-          }
-        }
-
-        for (let i = 0; i < this.groupedRT.length; i++)
-        {
-          for ( let j = 0; j < this.groupedRT[i]['values'].length; j++){
-            if (this.groupedRT[i]['values'][j]['count'] != 0){
-            this.groupedRT[i]['values'][j]['grpValue'] = this.groupedRT[i]['values'][j]['sum'] / this.groupedRT[i]['values'][j]['count'];
+              
+              let imdbScore = row["IMDb"];   
+              if (imdbScore !== "") {
+                countMap[child]["IMDB"][category].count++;
+                countMap[child]["IMDB"][category].sum += +imdbScore;
+              }             
             }
           }
         }
+      }
 
-        console.log("RT", this.groupedRT)
-        
+
+      options.forEach(option => {
+        let rtData = {key: option, values: []};
+        let imdbData = {key: option, values: []};
+       
+        for (let child in countMap) {
+          let rt = countMap[child]["RT"][option];
+          rt.grpName = child;
+          if (rt.count !== 0) {
+            rt.grpValue = rt.sum / rt.count;
+          } 
+          rtData.values.push(rt);
+
+          let imdb = countMap[child]["IMDB"][option];
+          imdb.grpName = child;
+          if (imdb.count !== 0) {
+            imdb.grpValue = imdb.sum / imdb.count;
+          } 
+          imdbData.values.push(imdb);
+        }
+
+        this.groupedRT.push(rtData);
+        this.groupedIMDB.push(imdbData)
+
+      });
     }
 
     createChart(){
@@ -142,7 +119,10 @@ class Grouped {
                     .attr("height", height + margin.top + margin.bottom)
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9b3b7a4b39a16f757dec6b07c5bccf0b93820b34
         let categoriesNames = this.groupedIMDB.map(function(d) { return d.key; });
         let rateNames       = this.groupedIMDB[0].values.map(function(d) { return d.grpName; });
 

@@ -6,7 +6,7 @@ class Main {
 
         this.charts = {
             "bar": {label: "Quantity", chart: new Bar()},
-            "stacked": {label: "IMDB Ratings", chart: new Grouped()},
+            "grouped": {label: "IMDB Ratings", chart: new Grouped()},
             "sunburst": {label: "Category Breakdown", chart: new Sunburst()},
             "profiles": {label: "Profiles", chart: new Profiles()},
         }
@@ -54,6 +54,10 @@ class Main {
 
     setChartType(chartType) {
         this.selections.chartType = chartType;
+
+        d3.select("#chartTypes > .selected").classed("selected", false);
+        d3.select(`#nav${chartType}`).classed("selected", true);
+
         this.renderChart();
     }
 
@@ -121,6 +125,7 @@ class Main {
     renderChart() {
         this.setSelections();
         this.clearChart();
+        this.showLoading();
         let selectedData = [];
         let services = {
             "Netflix": {count: 0, movies: []},
@@ -194,8 +199,16 @@ class Main {
             selectedData.push(row);
         }
 
+        this.clearChart();
         this.charts[this.selections.chartType].chart.render(selectedData, services, this.selections);
         this.infoChart.render(selectedData, services, this.selections.genres);
+    }
+
+    showLoading() {
+        console.log("loading");
+        d3.select("#chart")
+            .append("text")
+            .text("Loading");
     }
 
     clearChart() {
@@ -217,8 +230,6 @@ class Main {
         }
         let dataTypeDiv = d3.select("#dataTypes");
         dataTypeDiv.selectAll("*").remove();
-
-
         
         for (let dataType in dataTypes) {
             let div = dataTypeDiv.append("div");
@@ -240,17 +251,16 @@ class Main {
     }
 
     renderChartTypes() {
-        let select = d3.select("#chartTypes")
-            .append("select")
-            .attr("onchange", "setChartType(this.value)")
+        let chartTypesDiv = d3.select("#chartTypes")
         ;
 
         for (let chart in this.charts) {
-            select.append("option")
-                .attr("value", chart)
-                .attr("selected", this.selections.chartType === chart ? true : null)
+            chartTypesDiv.append("strong")
+                .classed("navElement", true)
+                .classed("selected", this.selections.chartType === chart)
+                .attr("id", `nav${chart}`)
                 .text(this.charts[chart].label)
-                .attr("onchange", "setChartType(this.value)")
+                .attr("onclick", `setChartType('${chart}')`)
             ;
         }
     }
