@@ -172,11 +172,7 @@ class Grouped {
                        .data(this.groupedIMDB)
                        .enter().append("g")
                        .attr("class", "g")
-<<<<<<< HEAD
-                       .attr("transform",function(d) { return "translate(" + x0(d.key)+ ",0)"; });
-=======
                        .attr("transform",function(d) { return "translate(" + x0(d.key) + ",0)"; });
->>>>>>> 1a682a2d2a1f2446b94f4c5b67f987e7789d3ead
 
       slice.selectAll("rect")
            .data(function(d) { return d.values; })
