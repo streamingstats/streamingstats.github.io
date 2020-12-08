@@ -205,7 +205,11 @@ class Grouped {
           .transition()
           .delay(function (d) {return Math.random()*1000;})
           .duration(1000)
-          .attr("y", function(d) { return y(d.grpValue); })
+          .attr("y", d => {
+            console.log("grpValue", d.grpValue);
+            console.log("y value", y(d.grpValue));
+            return y(d.grpValue);
+          })
           .attr("height", d => this.height - y(d.grpValue));
 
           svg.append("text")
@@ -265,7 +269,7 @@ class Grouped {
             .transition()
             .delay(function (d) {return Math.random()*1000;})
             .duration(1000)
-            .attr("y", function(d) { return y(d.grpValue); })
+            .attr("y", (d) => y(d.grpValue))
             .attr("height", d => this.height - y(d.grpValue));
 
         svg.append("text")
