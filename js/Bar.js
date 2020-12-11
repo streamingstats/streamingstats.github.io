@@ -43,7 +43,7 @@ class Bar {
         currentRectangles
             .enter()
             .append("rect")
-            .attr("class", "bar")
+            .attr("class", d => `bar ${d.service.toLowerCase().replace(" ", "").replace("+", "")}`)
             .attr("x", d => xAxis(d.service))
             .attr("y", d => yAxis(d.count))
             .attr("width", xAxis.bandwidth())

@@ -112,8 +112,14 @@ class Sunburst {
 
   createChart() {
     let root = this.partition(this.burst);
-    const color = d3.scaleOrdinal().range(d3.quantize(d3.interpolateRainbow, this.burst.children.length + 1));
+
     const nodesWithParents = root.descendants().slice(1);
+
+    const color = d3
+      .scaleOrdinal()
+      .domain(nodesWithParents)
+      .range(['#808000','#008040','#003380', '#800000'])
+    ;
     root.each(d => d.current = d);
 
     const svg = d3.select('#chart')

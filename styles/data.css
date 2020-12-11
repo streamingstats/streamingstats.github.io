@@ -116,19 +116,19 @@ main {
   color: black;
 }
 
-.Prime {
+.Prime, .primevideo {
   fill: #008040;
 }
 
-.Hulu {
+.Hulu, .hulu {
   fill: #808000;
 }
 
-.Netflix {
+.Netflix, .netflix {
   fill: #003380;
 }
 
-.Disney {
+.Disney, .disney {
   fill: #800000;
 }
 
