@@ -24,15 +24,17 @@ class Profiles {
 
     createButtons(selected) {
       let buttonDiv = d3.select('#chart')
-      .append("div")
-      .attr("id", "ratingsButtons")  
-    ;
-
+        .append("div")
+        .attr("style", "padding: 10px;")
+        .attr("id", "ratingsButtons")  
+      ;
+      
       buttonDiv
-        .selectAll('button')
+        .selectAll('span')
         .data(this.buttons)
         .enter()
-        .append("button")
+        .append("span")
+        .classed("d3Button", true)
         .classed("selected", d => d.name === selected)
         .text(function(d) {return d.name}).attr('value', function(d) {return d.name})
         .on('click', d => this.createChart(d.name))

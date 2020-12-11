@@ -36,6 +36,19 @@ class Quiz {
         this.dataType = dataType;
     }
 
+    updateAllLanguages() {
+        let button = document.getElementById("allLanguages");
+        let checked = button.textContent === "Select All";
+        button.textContent = checked ? "Unselect All" : "Select All";
+
+        let languages = document.getElementsByName("languages");
+        for (let language of languages) {
+            language.checked = checked ? true : null;
+        }
+
+        this.languages = checked ? this.util.getSupportedLanguages() : [];
+    }
+
     updateLanguages(language, add) {
         let index = this.languages.indexOf(language);
         if (add && index === -1) {
@@ -46,12 +59,14 @@ class Quiz {
     }
 
     setYearMin(yearMin) {
+        yearMin = parseInt(yearMin);
         if (yearMin >= this.util.getSupportedYearMin(this.dataType) && yearMin <= this.util.getSupportedYearMax()) {
             this.yearMin = yearMin;
         }
     }
 
     setYearMax(yearMax) {
+        yearMax = parseInt(yearMax);
         if (yearMax >= this.util.getSupportedYearMin(this.dataType) && yearMax <= this.util.getSupportedYearMax()) {
             this.yearMax = yearMax;
         }
@@ -75,13 +90,28 @@ class Quiz {
         }
     }
 
+    updateAllGenres() {
+        let button = document.getElementById("allGenres");
+        let checked = button.textContent === "Select All";
+        button.textContent = checked ? "Unselect All" : "Select All";
+
+        let genres = document.getElementsByName("genres");
+        for (let genre of genres) {
+            genre.checked = checked ? true : null;
+        }
+
+        this.genres = checked ? this.util.getSupportedGenres() : [];
+    }
+
     setRatingMin(ratingMin) {
+        ratingMin = parseInt(ratingMin);
         if (ratingMin >= 0 && ratingMin <= 100) {
             this.ratingMin = ratingMin;
         }
     }
 
     setRatingMax(ratingMax) {
+        ratingMax = parseInt(ratingMax);
         if (ratingMax >= 0 && ratingMax <= 100) {
             this.ratingMax = ratingMax;
         }
@@ -206,6 +236,15 @@ class Quiz {
         genreDiv.append("h3")
             .text("What Genre of media do you regularly watch?")
         
+        let selectAllDiv = genreDiv.append("div")
+            .attr("style", "text-align:center");
+        
+        selectAllDiv.append("button")
+            .attr("id", "allGenres")
+            .attr("onclick", "updateAllGenres()")
+            .text(this.genres.length === this.util.getSupportedGenres().length ? "UnSelect All" : "Select All")
+        ;
+
         this.util.getSupportedGenres().forEach(genre => {
             let div = genreDiv.append("div");
 
@@ -230,6 +269,15 @@ class Quiz {
 
         languageDiv.append("h3")
             .text("What Languages do you regularly watch your media in?")
+
+        let selectAllDiv = languageDiv.append("div")
+            .attr("style", "text-align:center");
+        
+        selectAllDiv.append("button")
+            .attr("id", "allLanguages")
+            .attr("onclick", "updateAllLanguages()")
+            .text(this.languages.length === this.util.getSupportedLanguages().length ? "UnSelect All" : "Select All")
+        ;
 
         this.util.getSupportedLanguages().forEach(language => {
             let div = languageDiv.append("div");
@@ -293,6 +341,10 @@ function setDataType(dataType) {
     quiz.setDataType(dataType);
 }
 
+function updateAllLanguages() {
+    quiz.updateAllLanguages();
+}
+
 function updateLanguages(language, checked) {
     quiz.updateLanguages(language, checked)
 }
@@ -307,6 +359,10 @@ function setYearMax(yearMax) {
 
 function updateAgeRange(age, checked) {
     quiz.updateAgeRange(age, checked);
+}
+
+function updateAllGenres() {
+    quiz.updateAllGenres();
 }
 
 function updateGenres(genre, checked) {

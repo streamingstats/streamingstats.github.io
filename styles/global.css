@@ -23,10 +23,25 @@ p {
 }
   
 .selected {
-  background-color: #003380;
+  background-color: #003380 !important;
 }
 
 strong > a {
   text-decoration: none;
   color: white;
+}
+
+#mainLogo {
+  cursor: pointer;
+}
+
+#mainLogo > a {
+  text-decoration: none;
+  color: #FFFFFF;
+}
+
+.d3Button {
+  padding: 5px;
+  background-color: #888888;
+  cursor: pointer;
 }
